@@ -1,0 +1,439 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>[最优化]无约束优化 | 迎风起降的小站</title><meta name="author" content="Feng Weiming"><meta name="copyright" content="Feng Weiming"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="0. 几种优化算法关系  1. 梯度法（Gradient Descent）1.1 原理 目标函数的梯度： 梯度法基于目标函数的梯度信息进行迭代优化。对于目标函数 $f(x)$，梯度 $\nabla f(x)$ 表示了函数在某点 $x$ 处的变化率和变化方向。梯度的方向是函数增长最快的方向，而梯度的负方向则是函数下降最快的方向。  迭代更新规则： 梯度法通过迭代更新当前解 $x$ 的值，使其朝着目标">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[最优化]无约束优化">
+<meta property="og:url" content="http://blog.fnas64.us.kg/2024/05/03/%E6%9C%80%E4%BC%98%E5%8C%96-%E6%97%A0%E7%BA%A6%E6%9D%9F%E4%BC%98%E5%8C%96/index.html">
+<meta property="og:site_name" content="迎风起降的小站">
+<meta property="og:description" content="0. 几种优化算法关系  1. 梯度法（Gradient Descent）1.1 原理 目标函数的梯度： 梯度法基于目标函数的梯度信息进行迭代优化。对于目标函数 $f(x)$，梯度 $\nabla f(x)$ 表示了函数在某点 $x$ 处的变化率和变化方向。梯度的方向是函数增长最快的方向，而梯度的负方向则是函数下降最快的方向。  迭代更新规则： 梯度法通过迭代更新当前解 $x$ 的值，使其朝着目标">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.fnas64.us.kg/img/butterfly-icon.png">
+<meta property="article:published_time" content="2024-05-03T07:47:04.000Z">
+<meta property="article:modified_time" content="2024-11-19T14:30:39.986Z">
+<meta property="article:author" content="Feng Weiming">
+<meta property="article:tag" content="无约束优化">
+<meta property="article:tag" content="梯度法">
+<meta property="article:tag" content="最速下降法">
+<meta property="article:tag" content="牛顿法">
+<meta property="article:tag" content="拟牛顿法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.fnas64.us.kg/img/butterfly-icon.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://blog.fnas64.us.kg/2024/05/03/%E6%9C%80%E4%BC%98%E5%8C%96-%E6%97%A0%E7%BA%A6%E6%9D%9F%E4%BC%98%E5%8C%96/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '[最优化]无约束优化',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  isShuoshuo: false
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(https://bing.img.run/1920x1080.php);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">迎风起降的小站</span></a><a class="nav-page-title" href="/"><span class="site-name">[最优化]无约束优化</span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">[最优化]无约束优化</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-05-03T07:47:04.000Z" title="发表于 2024-05-03 15:47:04">2024-05-03</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-11-19T14:30:39.986Z" title="更新于 2024-11-19 22:30:39">2024-11-19</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%80%E4%BC%98%E5%8C%96/">最优化</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="0-几种优化算法关系"><a href="#0-几种优化算法关系" class="headerlink" title="0. 几种优化算法关系"></a>0. 几种优化算法关系</h1><p><img src="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202405031854745.png"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202405031857571.png"></p>
+<h1 id="1-梯度法（Gradient-Descent）"><a href="#1-梯度法（Gradient-Descent）" class="headerlink" title="1. 梯度法（Gradient Descent）"></a>1. 梯度法（Gradient Descent）</h1><h2 id="1-1-原理"><a href="#1-1-原理" class="headerlink" title="1.1 原理"></a>1.1 原理</h2><ol>
+<li><p><strong>目标函数的梯度</strong>：</p>
+<p>梯度法基于目标函数的梯度信息进行迭代优化。对于目标函数 $f(x)$，梯度 $\nabla f(x)$ 表示了函数在某点 $x$ 处的变化率和变化方向。梯度的方向是函数增长最快的方向，而梯度的负方向则是函数下降最快的方向。</p>
+</li>
+<li><p><strong>迭代更新规则</strong>：</p>
+<p>梯度法通过迭代更新当前解 $x$ 的值，使其朝着目标函数下降的方向移动。更新规则通常如下所示：<br>$$ x_{k+1} &#x3D; x_k - \alpha \nabla f(x_k) $$<br>其中，$x_k$ 是第 $k$ 步的解，$x_{k+1}$ 是下一步的解，$\alpha$ 是学习率（也称为步长，为一个<strong>常数</strong>），控制了每一步迭代中移动的距离。</p>
+</li>
+<li><p>梯度法实际上是一个<strong>最朴素</strong>的算法，是后续很多算法的基石</p>
+</li>
+</ol>
+<h2 id="1-2-算法步骤"><a href="#1-2-算法步骤" class="headerlink" title="1.2 算法步骤"></a>1.2 算法步骤</h2><ol>
+<li><p><strong>初始化参数</strong>：选择合适的初始参数值 $\mathbf{x}_0$</p>
+</li>
+<li><p><strong>计算梯度</strong>：计算目标函数关于参数的梯度 $\nabla J(\mathbf{x})$。</p>
+</li>
+<li><p><strong>更新参数</strong>：根据梯度的反方向调整参数值，更新参数 $\mathbf{x}$，以减小目标函数的值。更新规则为：</p>
+<p>$$<br>\mathbf{x}_{t+1} &#x3D; \mathbf{x}_t - \alpha \nabla J(\mathbf{x}_t)<br>$$<br>其中，$\alpha$ 是学习率（步长），控制参数更新的幅度。</p>
+</li>
+<li><p><strong>收敛判断</strong>：判断是否满足停止条件，例如达到最大迭代次数、目标函数值变化小于阈值等。</p>
+</li>
+<li><p><strong>迭代</strong>：若未满足停止条件，则重复步骤 2-4，直到满足停止条件为止。</p>
+</li>
+</ol>
+<h2 id="1-3-代码实现"><a href="#1-3-代码实现" class="headerlink" title="1.3 代码实现"></a>1.3 代码实现</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">%matplotlib inline</span><br><span class="line">%config InlineBackend.figure_format = <span class="string">&#x27;svg&#x27;</span></span><br><span class="line">plt.rc(<span class="string">&#x27;text&#x27;</span>, usetex=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义函数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">f</span>(<span class="params">x</span>):</span><br><span class="line">    x_1, x_2, x_3 = x</span><br><span class="line">    <span class="keyword">return</span> (x_1 - <span class="number">4</span>)**<span class="number">4</span> + (x_2 - <span class="number">3</span>)**<span class="number">2</span> + <span class="number">4</span>*(x_3 + <span class="number">5</span>)**<span class="number">4</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义函数导数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">df_dx</span>(<span class="params">x</span>):</span><br><span class="line">    x_1, x_2, x_3 = x</span><br><span class="line">    df_dx1 = <span class="number">4</span> * (x_1 - <span class="number">4</span>)**<span class="number">3</span></span><br><span class="line">    df_dx2 = <span class="number">2</span> * (x_2 - <span class="number">3</span>)</span><br><span class="line">    df_dx3 = <span class="number">16</span> * (x_3 + <span class="number">5</span>)**<span class="number">3</span></span><br><span class="line">    <span class="keyword">return</span> np.array([df_dx1, df_dx2, df_dx3])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始点</span></span><br><span class="line">x0 = np.array([<span class="number">4.0</span>, <span class="number">2.0</span>, -<span class="number">1.0</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 梯度下降法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">gradient_descent</span>(<span class="params">f, df_dx,x0, learning_rate=<span class="number">0.005</span>, epsilon=<span class="number">1e-6</span>, max_iters=<span class="number">1000</span></span>):</span><br><span class="line">    x = x0</span><br><span class="line">    recorder = <span class="built_in">list</span>()</span><br><span class="line">    recorder.append([<span class="number">0</span>,x,<span class="number">0</span>,f(x)])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(max_iters):</span><br><span class="line">        gradient = df_dx(x)</span><br><span class="line">        <span class="keyword">if</span> np.linalg.norm(gradient) &lt; epsilon:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        x = x - learning_rate * gradient</span><br><span class="line">        recorder.append([i+<span class="number">1</span>,x,gradient,f(x)])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> x, pd.DataFrame(recorder, columns=[<span class="string">&#x27;STEP&#x27;</span>, <span class="string">&#x27;X&#x27;</span>,<span class="string">&#x27;gradient&#x27;</span>, <span class="string">&#x27;F(X)&#x27;</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 求解</span></span><br><span class="line">x_opt_gd,recorder_gd = gradient_descent(f,df_dx, x0)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Gradient Descent:&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Optimal Point:&quot;</span>, x_opt_gd)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Minimum Value of f:&quot;</span>, f(x_opt_gd))</span><br><span class="line"></span><br><span class="line">recorder_gd</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202405031802000.png"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202405031803526.png"></p>
+<h1 id="2-最速法（Steepest-Descent）"><a href="#2-最速法（Steepest-Descent）" class="headerlink" title="2. 最速法（Steepest Descent）"></a>2. 最速法（Steepest Descent）</h1><h2 id="2-1-原理"><a href="#2-1-原理" class="headerlink" title="2.1 原理"></a>2.1 原理</h2><p>最速法其实与梯度法非常非常类似，唯一区别在于<strong>最速法的步长$\alpha_k$是动态变化的，而非梯度法中的常数$\alpha$<strong>。最速法中的每一次迭代需要通过</strong>线性搜索</strong>算法重新计算步长。</p>
+<p><strong>本质：</strong></p>
+<ul>
+<li><p>最速法是梯度法的一种实现</p>
+</li>
+<li><p>是用<strong>线性函数</strong>去近似目标函数</p>
+<p>最速下降法可以被解释为在每一步迭代中使用当前点处的线性函数（梯度）来近似目标函数，并沿着该线性函数的反方向进行搜索</p>
+</li>
+</ul>
+<p><strong>优点：</strong></p>
+<ol>
+<li><p>迭代过程简单，计算量和存储量小；</p>
+</li>
+<li><p>算法开局时函数值一般下降的很快，可以很快的靠近最优解的邻域。</p>
+</li>
+</ol>
+<p><strong>缺点：</strong></p>
+<ol>
+<li>相邻两次迭代方向的<strong>正交性</strong> (精准线性搜索定理) 导致锯齿现象，不适用于算法收敛。</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202405041305204.png"></p>
+<h2 id="2-2-算法步骤"><a href="#2-2-算法步骤" class="headerlink" title="2.2 算法步骤"></a>2.2 算法步骤</h2><ol>
+<li><p><strong>初始化</strong>：</p>
+<ul>
+<li>选择初始点 $x_0$</li>
+<li>设定停止条件 $\epsilon$</li>
+<li>最大迭代次数</li>
+</ul>
+</li>
+<li><p><strong>计算梯度</strong>：<br>$$<br>g_t &#x3D; \nabla f(x_t)<br>$$</p>
+</li>
+<li><p><strong>更新参数</strong>：</p>
+<p>$$<br>{x}_{t+1} &#x3D; {x}_t - \alpha_k g_t<br>$$<br> <strong>其中，$\alpha_k$ 是学习率（步长），利用一维搜索确定</strong></p>
+</li>
+<li><p><strong>收敛判断</strong>：</p>
+<ul>
+<li>若 $| g_k |$ 小于预先设定的阈值 $\epsilon$，则停止迭代</li>
+<li>若 达到最大迭代次数，则也停止迭代</li>
+</ul>
+</li>
+<li><p><strong>迭代</strong>：<br>重复2-4</p>
+</li>
+</ol>
+<h2 id="3-3-代码实现"><a href="#3-3-代码实现" class="headerlink" title="3.3 代码实现"></a>3.3 代码实现</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">%matplotlib inline</span><br><span class="line">%config InlineBackend.figure_format = <span class="string">&#x27;svg&#x27;</span></span><br><span class="line">plt.rc(<span class="string">&#x27;text&#x27;</span>, usetex=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义函数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">f</span>(<span class="params">x</span>):</span><br><span class="line">    x_1, x_2, x_3 = x</span><br><span class="line">    <span class="keyword">return</span> (x_1 - <span class="number">4</span>)**<span class="number">4</span> + (x_2 - <span class="number">3</span>)**<span class="number">2</span> + <span class="number">4</span>*(x_3 + <span class="number">5</span>)**<span class="number">4</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义函数导数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">df_dx</span>(<span class="params">x</span>):</span><br><span class="line">    x_1, x_2, x_3 = x</span><br><span class="line">    df_dx1 = <span class="number">4</span> * (x_1 - <span class="number">4</span>)**<span class="number">3</span></span><br><span class="line">    df_dx2 = <span class="number">2</span> * (x_2 - <span class="number">3</span>)</span><br><span class="line">    df_dx3 = <span class="number">16</span> * (x_3 + <span class="number">5</span>)**<span class="number">3</span></span><br><span class="line">    <span class="keyword">return</span> np.array([df_dx1, df_dx2, df_dx3])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始点</span></span><br><span class="line">x0 = np.array([<span class="number">4.0</span>, <span class="number">2.0</span>, -<span class="number">1.0</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Armijo条件线搜索，用来找到一个合适的步长</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">line_search</span>(<span class="params">f, df, x, d</span>):</span><br><span class="line">    alpha = <span class="number">0.1</span></span><br><span class="line">    beta = <span class="number">0.5</span></span><br><span class="line">    t = <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> f(x + t*d) &gt; f(x) + alpha * t * np.dot(df(x), d):</span><br><span class="line">        t = beta * t</span><br><span class="line">    <span class="keyword">return</span> t</span><br><span class="line"></span><br><span class="line"><span class="comment"># 最速下降法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">steepest_descent</span>(<span class="params">f, df_dx, x0, epsilon=<span class="number">1e-6</span>, max_iters=<span class="number">1000</span></span>):</span><br><span class="line">    x = x0</span><br><span class="line">    recorder = <span class="built_in">list</span>()</span><br><span class="line">    recorder.append([<span class="number">0</span>,x,<span class="number">0</span>,<span class="number">0</span>,f(x)])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(max_iters):</span><br><span class="line">        grad = df_dx(x)</span><br><span class="line">        <span class="keyword">if</span> np.linalg.norm(grad) &lt; epsilon:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        direction = -grad</span><br><span class="line">        step_size = line_search(f, df_dx, x, direction)</span><br><span class="line">        x = x + step_size * direction</span><br><span class="line">        recorder.append([i+<span class="number">1</span>,x,direction,step_size,f(x)])</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        Warning(<span class="string">&quot;达到最大迭代次数，未能收敛&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> x, pd.DataFrame(recorder, columns=[<span class="string">&#x27;STEP&#x27;</span>, <span class="string">&#x27;X&#x27;</span>, <span class="string">&#x27;direction&#x27;</span>,<span class="string">&#x27;step_size&#x27;</span>,<span class="string">&#x27;F(X)&#x27;</span>])</span><br><span class="line"></span><br><span class="line">x_opt_sd, recorder_sd = steepest_descent(f, df_dx, x0)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Steepest Descent:&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Optimal solution:&quot;</span>, x_opt_sd)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Optimal value of f(x):&quot;</span>, f(x_opt_sd))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 迭代过程</span></span><br><span class="line">show_path(recorder_sd, <span class="string">&quot;Steepest Descent Path&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202405031852050.png"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202405031852401.png"></p>
+<h1 id="3-牛顿法（Newton-Method）"><a href="#3-牛顿法（Newton-Method）" class="headerlink" title="3.牛顿法（Newton Method）"></a>3.牛顿法（Newton Method）</h1><h2 id="3-1-原理"><a href="#3-1-原理" class="headerlink" title="3.1 原理"></a>3.1 原理</h2><p>由于最速下降法速度慢，<strong>Newton引入二阶梯度加速</strong>，通过求其Hesse矩阵，一步到位直接求到极小点</p>
+<p>牛顿法的原理是基于使用一个<strong>二次函数</strong>去近似目标函数，然后精确地求出这个二次函数的极小点作为新的迭代点，从而逐步优化目标函数的过程</p>
+<ol>
+<li><p><strong>二次函数的选取</strong>：牛顿法通过在当前点处使用目标函数的二阶泰勒展开式来构建一个二次函数作为近似。在点 $x_k$ 处，目标函数 $f(x)$ 的二阶泰勒展开式为：</p>
+<p>$$ f(x+s) \approx f(x_k) + \nabla f(x_k)^{T}s + \frac{1}{2} s^{T} \nabla^2 f(x_k) s &#x3D;: m_k(s) $$</p>
+<p>其中，$\nabla f(x_k)$ 是目标函数在 $x_k$ 处的梯度，$\nabla^2 f(x_k)$ 是目标函数在 $x_k$ 处的Hessian矩阵。</p>
+</li>
+<li><p><strong>迭代方向的选取</strong>：牛顿法的关键在于求解二次函数 $m_k(s)$ 的极小点，作为下一步迭代的方向。通过令二次函数的一阶导数为零，即 $\nabla m_k(s) &#x3D; 0$，解出极小点所对应的 $s$ 值，即为牛顿方向。</p>
+</li>
+<li><p><strong>迭代更新</strong>：一旦求得牛顿方向 $s$，将其应用于当前点 $x_k$，即 $x_{k+1} &#x3D; x_k + s$，得到下一次迭代的点 $x_{k+1}$。</p>
+</li>
+<li><p><strong>收敛性</strong>：如果初始点选择得当，且目标函数在局部区域内表现得足够光滑，那么牛顿法往往能够快速收敛到局部极小值点。这是因为牛顿法具有至少二阶收敛速度，即每次迭代都会更快地逼近极小值点。</p>
+</li>
+</ol>
+<p>总结，牛顿法利用二次函数近似目标函数，并通过精确求解二次函数的极小点来指导迭代方向，以加速目标函数的优化过程。</p>
+<ul>
+<li><strong>缺点：</strong></li>
+</ul>
+<ol>
+<li>$\nabla^2f(x_k)$ 可能不正定，导致 $d_k$ 可能不是下降方向</li>
+<li>$\nabla^2f(x_k)$ 可能是奇异的，导致 $d_k$ 无解</li>
+<li>$\nabla^2f(x_k)$ 计算量过大</li>
+</ol>
+<h2 id="3-2-算法步骤"><a href="#3-2-算法步骤" class="headerlink" title="3.2 算法步骤"></a>3.2 算法步骤</h2><ol>
+<li><p><strong>初始化</strong>：</p>
+<ul>
+<li>选择初始点 $x_0$。</li>
+<li>设置精度参数 $\epsilon$，用于控制算法收敛的条件。</li>
+<li>初始化迭代次数 $k &#x3D; 0$。</li>
+</ul>
+</li>
+<li><p><strong>迭代过程</strong>：</p>
+<ul>
+<li><p><strong>计算梯度和Hessian矩阵</strong>：</p>
+<ul>
+<li>计算目标函数在当前点 $x_k$ 处的梯度 $g_k &#x3D; \nabla f(x_k)$。</li>
+<li>计算目标函数在当前点 $x_k$ 处的Hessian矩阵 $H_k &#x3D; \nabla^2 f(x_k)$。</li>
+</ul>
+</li>
+<li><p><strong>解牛顿方程</strong>：</p>
+<ul>
+<li>计算牛顿方向 $d_k^N &#x3D; - (H_k)^{-1} g_k$。</li>
+</ul>
+</li>
+<li><p><strong>更新参数</strong>：</p>
+<ul>
+<li>更新迭代点：$x_{k+1} &#x3D; x_k + d_k^N$。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>判断停止条件</strong>：</p>
+<ul>
+<li>如果 $| g_k | \leq \epsilon$，则算法收敛，停止迭代。</li>
+<li>否则，将 $k$ 更新为 $k + 1$，并回到步骤2。</li>
+</ul>
+</li>
+</ol>
+<h2 id="3-3-代码实现-1"><a href="#3-3-代码实现-1" class="headerlink" title="3.3 代码实现"></a>3.3 代码实现</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义目标函数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">f</span>(<span class="params">x</span>):</span><br><span class="line">    <span class="keyword">return</span> (x[<span class="number">0</span>] - <span class="number">4</span>)**<span class="number">4</span> + (x[<span class="number">1</span>] - <span class="number">3</span>)**<span class="number">2</span> + <span class="number">4</span>*(x[<span class="number">2</span>] + <span class="number">5</span>)**<span class="number">4</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始点</span></span><br><span class="line">x0 = np.array([<span class="number">3.9</span>, <span class="number">2</span>, -<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 黑塞矩阵</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">hessian</span>(<span class="params">x</span>):</span><br><span class="line">    hessian_matrix = np.zeros((<span class="built_in">len</span>(x), <span class="built_in">len</span>(x)))</span><br><span class="line">    <span class="comment"># 计算二阶偏导数</span></span><br><span class="line">    hessian_matrix[<span class="number">0</span>, <span class="number">0</span>] = <span class="number">12</span>*(x[<span class="number">0</span>] - <span class="number">4</span>)**<span class="number">2</span></span><br><span class="line">    hessian_matrix[<span class="number">1</span>, <span class="number">1</span>] = <span class="number">2</span></span><br><span class="line">    hessian_matrix[<span class="number">2</span>, <span class="number">2</span>] = <span class="number">96</span>*(x[<span class="number">2</span>] + <span class="number">5</span>)**<span class="number">2</span></span><br><span class="line">    <span class="keyword">return</span> hessian_matrix</span><br><span class="line"></span><br><span class="line"><span class="comment"># 牛顿法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">newton_method</span>(<span class="params">f, x0, max_iter=<span class="number">1000</span>, tol=<span class="number">1e-6</span></span>):</span><br><span class="line">    x = x0</span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(max_iter):</span><br><span class="line">        gradient = approx_fprime(x, f, epsilon=<span class="number">1e-6</span>)</span><br><span class="line">        hess = hessian(x)</span><br><span class="line">        step = np.linalg.solve(hess, -gradient)</span><br><span class="line">        x = x + step</span><br><span class="line">        <span class="keyword">if</span> np.linalg.norm(step) &lt; tol:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">return</span> x</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;牛顿法&quot;</span>)</span><br><span class="line">x_min_newton = newton_method(f, x0)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;最小值点 ：&quot;</span>, x_min_newton)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;最小值   ：&quot;</span>, f(x_min_newton))</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>使用有限差分计算黑塞矩阵实现：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义目标函数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">f</span>(<span class="params">x</span>):</span><br><span class="line">    <span class="keyword">return</span> (x[<span class="number">0</span>] - <span class="number">4</span>)**<span class="number">4</span> + (x[<span class="number">1</span>] - <span class="number">3</span>)**<span class="number">2</span> + <span class="number">4</span>*(x[<span class="number">2</span>] + <span class="number">5</span>)**<span class="number">4</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始点</span></span><br><span class="line">x0 = np.array([<span class="number">3.9</span>, <span class="number">2</span>, -<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 黑塞矩阵</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">approx_hess</span>(<span class="params">x, func, epsilon=<span class="number">1e-10</span></span>):</span><br><span class="line">    n = <span class="built_in">len</span>(x)</span><br><span class="line">    hessian = np.zeros((n, n))</span><br><span class="line">    <span class="comment"># 遍历计算海森矩阵的每个元素</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">            <span class="comment"># 计算对x[i]和x[j]的一阶偏导数</span></span><br><span class="line">            f_xi_xj_plus = func(x + epsilon * (np.eye(n)[i] + np.eye(n)[j]))</span><br><span class="line">            f_xi_plus = func(x + epsilon * np.eye(n)[i])</span><br><span class="line">            f_xj_plus = func(x + epsilon * np.eye(n)[j])</span><br><span class="line">            <span class="comment"># 使用二点有限差分计算二阶偏导数</span></span><br><span class="line">            hessian[i, j] = (f_xi_xj_plus - f_xi_plus - f_xj_plus + func(x)) / (epsilon**<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> hessian</span><br><span class="line"></span><br><span class="line"><span class="comment"># 牛顿法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">newton_method</span>(<span class="params">f, x0, max_iter=<span class="number">1000</span>, tol=<span class="number">1e-6</span></span>):</span><br><span class="line">    x = x0</span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(max_iter):</span><br><span class="line">        gradient = approx_fprime(x, f, epsilon=<span class="number">1e-6</span>)</span><br><span class="line">        hessian = approx_hess(x, f, epsilon=<span class="number">1e-6</span>)</span><br><span class="line">        step = np.linalg.solve(hessian, -gradient)</span><br><span class="line">        x = x + step</span><br><span class="line">        <span class="keyword">if</span> np.linalg.norm(step) &lt; tol:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">return</span> x</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;牛顿法&quot;</span>)</span><br><span class="line">start_time = time.time()</span><br><span class="line">x_min_newton = newton_method(f, x0)</span><br><span class="line">end_time = time.time()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;最小值点 ：&quot;</span>, x_min_newton)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;最小值   ：&quot;</span>, f(x_min_newton))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;耗时     ：&quot;</span>, end_time - start_time, <span class="string">&quot;秒&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202405041259044.png"></p>
+<h1 id="3-拟牛顿法（Quasi-Newton-Methods）"><a href="#3-拟牛顿法（Quasi-Newton-Methods）" class="headerlink" title="3.拟牛顿法（Quasi-Newton Methods）"></a>3.拟牛顿法（Quasi-Newton Methods）</h1><h2 id="3-1-前言"><a href="#3-1-前言" class="headerlink" title="3.1 前言"></a>3.1 前言</h2><p>由于牛顿法存在</p>
+<ol>
+<li>$\nabla^2f(x_k)$ 可能不正定，导致 $d_k$ 可能不是下降方向</li>
+<li>$\nabla^2f(x_k)$ 可能是奇异的，导致 $d_k$ 无解</li>
+<li>$\nabla^2f(x_k)$ 计算量过大</li>
+</ol>
+<p>的缺点，针对 $\nabla^2f(x_k)$ 的各项问题，提出利用一个近似矩阵 $B$ 来替代 $\nabla^2f(x_k)$。</p>
+<p><strong>近似矩阵 $B$ 需要满足：</strong></p>
+<ol>
+<li>$B_k\approx\nabla^2f(x_k)$</li>
+<li>$B_k$ 对称正定</li>
+<li>$B_k$ 计算更加简单</li>
+</ol>
+<h2 id="3-2-SR1"><a href="#3-2-SR1" class="headerlink" title="3.2 SR1"></a>3.2 SR1</h2><h3 id="3-2-1-基本信息"><a href="#3-2-1-基本信息" class="headerlink" title="3.2.1 基本信息"></a>3.2.1 基本信息</h3><ul>
+<li>名称：Symmetric Rank-One</li>
+<li>提出者：William C. Davidon</li>
+<li>时间：1956年</li>
+</ul>
+<p>$$H_{k+1}&#x3D;H_k+\frac{(s_k-H_ky_k)(s_k-H_ky_k)^T}{(s_k-H_ky_k)^Ty_k}$$</p>
+<ul>
+<li><p>其中:</p>
+<ul>
+<li>$y_k:&#x3D;\nabla f(x_{k+1})-\nabla f(x_k)$</li>
+<li>$s_k:&#x3D;x_{k+1}-x_k$</li>
+<li>$H_k:&#x3D;B_k^{-1}$</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-2-2-推导"><a href="#3-2-2-推导" class="headerlink" title="3.2.2 推导"></a>3.2.2 推导</h3><p>待补充….</p>
+<h3 id="3-2-3-算法步骤"><a href="#3-2-3-算法步骤" class="headerlink" title="3.2.3 算法步骤"></a>3.2.3 算法步骤</h3><ol>
+<li><p><strong>初始令</strong> $H_0 &#x3D; I$</p>
+</li>
+<li><p><strong>计算梯度</strong>：$g_k &#x3D; \nabla f(x_k)$</p>
+</li>
+<li><p><strong>计算搜索方向</strong>：$d_k &#x3D; - (H_k)^{-1} g_k$</p>
+</li>
+<li><p><strong>更新参数</strong>：</p>
+<ul>
+<li>更新迭代点：$x_{k+1} &#x3D; x_k + d_k$</li>
+<li>更新矩阵：$H_{k+1}&#x3D;H_k+\frac{(s_k-H_ky_k)(s_k-H_ky_k)^T}{(s_k-H_ky_k)^Ty_k}$</li>
+</ul>
+</li>
+<li><p><strong>判断停止条件</strong>：</p>
+<ul>
+<li>如果 $| g_k | \leq \epsilon$，则算法收敛，停止迭代</li>
+<li>否则，将 $k$ 更新为 $k + 1$，并回到步骤 2</li>
+</ul>
+</li>
+</ol>
+<h3 id="3-2-4-收敛性"><a href="#3-2-4-收敛性" class="headerlink" title="3.2.4 收敛性"></a>3.2.4 收敛性</h3><p>超线性收敛</p>
+<blockquote>
+<p>虽然不是一般的超线性，但是依然算是超线性的收敛速度（准确来说是n+1<br>步Q-超线性收敛速度</p>
+</blockquote>
+<h3 id="3-2-5-代码实现"><a href="#3-2-5-代码实现" class="headerlink" title="3.2.5 代码实现"></a>3.2.5 代码实现</h3><p>注意此处实际上是阻尼拟牛顿法的实现</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> scipy.optimize <span class="keyword">import</span> approx_fprime</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义目标函数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">f</span>(<span class="params">x</span>):</span><br><span class="line">    <span class="keyword">return</span> (x[<span class="number">0</span>] - <span class="number">4</span>)**<span class="number">4</span> + (x[<span class="number">1</span>] - <span class="number">3</span>)**<span class="number">2</span> + <span class="number">4</span>*(x[<span class="number">2</span>] + <span class="number">5</span>)**<span class="number">4</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始点</span></span><br><span class="line">x0 = np.array([<span class="number">3.9</span>, <span class="number">2</span>, -<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 线搜索（使用Armijo准则）</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">line_search</span>(<span class="params">f, xk, pk, alpha=<span class="number">1</span>, beta=<span class="number">0.5</span>, c=<span class="number">0.1</span></span>):</span><br><span class="line">    <span class="keyword">while</span> f(xk + alpha * pk) &gt; f(xk) + c * alpha * np.dot(approx_fprime(xk, f, epsilon=<span class="number">1e-6</span>), pk):</span><br><span class="line">        alpha *= beta</span><br><span class="line">    <span class="keyword">return</span> alpha</span><br><span class="line"></span><br><span class="line"><span class="comment"># Rank-1更新的拟牛顿法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">rank1_method</span>(<span class="params">f, x0, max_iter=<span class="number">1000</span>, tol=<span class="number">1e-6</span></span>):</span><br><span class="line">    n = <span class="built_in">len</span>(x0)</span><br><span class="line">    Hk = np.eye(n)  <span class="comment"># 初始Hessian逆估计</span></span><br><span class="line">    xk = x0</span><br><span class="line">    gk = approx_fprime(xk, f, epsilon=<span class="number">1e-6</span>)  <span class="comment"># 初始梯度估计</span></span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(max_iter):</span><br><span class="line">        pk = -np.dot(Hk, gk)  <span class="comment"># 计算搜索方向</span></span><br><span class="line">        alpha = line_search(f, xk, pk)  <span class="comment"># 使用线搜索确定步长</span></span><br><span class="line">        x_next = xk + alpha * pk  <span class="comment"># 更新参数</span></span><br><span class="line">        g_next = approx_fprime(x_next, f, epsilon=<span class="number">1e-6</span>)</span><br><span class="line">        sk = x_next - xk</span><br><span class="line">        yk = g_next - gk</span><br><span class="line">        <span class="keyword">if</span> np.linalg.norm(yk) &lt; tol:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="comment"># Rank-1更新Hessian逆估计</span></span><br><span class="line">        Hk += np.outer(sk - np.dot(Hk, yk), sk) / np.dot(sk - np.dot(Hk, yk), yk)</span><br><span class="line">        xk = x_next</span><br><span class="line">        gk = g_next</span><br><span class="line">    <span class="keyword">return</span> xk</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;rank1-拟牛顿法&quot;</span>)</span><br><span class="line">start_time = time.time()</span><br><span class="line">x_min_rank1 = rank1_method(f, x0)</span><br><span class="line">end_time = time.time()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;最小值点 &quot;</span>, x_min_rank1)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;最小值   ：&quot;</span>, f(x_min_rank1))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;耗时     ：&quot;</span>, end_time - start_time, <span class="string">&quot;秒&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="3-3-DFP"><a href="#3-3-DFP" class="headerlink" title="3.3 DFP"></a>3.3 DFP</h2><h3 id="3-3-1-基本信息"><a href="#3-3-1-基本信息" class="headerlink" title="3.3.1 基本信息"></a>3.3.1 基本信息</h3><ul>
+<li>名称：Davidon-Fletcher-Powell</li>
+<li>提出者：Davidon、Fletcher、Powell</li>
+<li>时间：1969年</li>
+</ul>
+<p>$$H_{k+1}&#x3D;H_k+\frac{s_ks_k^T}{s_k^Ty_k}-\frac{H_ky_ky_k^TH_k}{y_k^TH_ky_k}$$</p>
+<ul>
+<li><p>其中:</p>
+<ul>
+<li>$y_k:&#x3D;\nabla f(x_{k+1})-\nabla f(x_k)$</li>
+<li>$s_k:&#x3D;x_{k+1}-x_k$</li>
+<li>$H_k:&#x3D;B_k^{-1}$</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-3-2-推导"><a href="#3-3-2-推导" class="headerlink" title="3.3.2 推导"></a>3.3.2 推导</h3><p>待补充….</p>
+<h3 id="3-3-3-算法步骤"><a href="#3-3-3-算法步骤" class="headerlink" title="3.3.3 算法步骤"></a>3.3.3 算法步骤</h3><ol>
+<li><p><strong>初始令</strong> $H_0 &#x3D; I$</p>
+</li>
+<li><p><strong>计算梯度</strong>：$g_k &#x3D; \nabla f(x_k)$</p>
+</li>
+<li><p><strong>计算搜索方向</strong>：$d_k &#x3D; - (H_k)^{-1} g_k$</p>
+</li>
+<li><p><strong>更新参数</strong>：</p>
+<ul>
+<li>更新迭代点：$x_{k+1} &#x3D; x_k + d_k$</li>
+<li>更新矩阵：$H_{k+1}&#x3D;H_k+\frac{s_ks_k^T}{s_k^Ty_k}-\frac{H_ky_ky_k^TH_k}{y_k^TH_ky_k}$</li>
+</ul>
+</li>
+<li><p><strong>判断停止条件</strong>：</p>
+<ul>
+<li>如果 $| g_k | \leq \epsilon$，则算法收敛，停止迭代</li>
+<li>否则，将 $k$ 更新为 $k + 1$，并回到步骤 2</li>
+</ul>
+</li>
+</ol>
+<h3 id="3-3-4-收敛性"><a href="#3-3-4-收敛性" class="headerlink" title="3.3.4 收敛性"></a>3.3.4 收敛性</h3><p><strong>收敛性证明目前空缺</strong></p>
+<h3 id="3-3-5-代码实现"><a href="#3-3-5-代码实现" class="headerlink" title="3.3.5 代码实现"></a>3.3.5 代码实现</h3><p>注意此处实际上是阻尼拟牛顿法的实现</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> scipy.optimize <span class="keyword">import</span> approx_fprime</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义目标函数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">f</span>(<span class="params">x</span>):</span><br><span class="line">    <span class="keyword">return</span> (x[<span class="number">0</span>] - <span class="number">4</span>)**<span class="number">4</span> + (x[<span class="number">1</span>] - <span class="number">3</span>)**<span class="number">2</span> + <span class="number">4</span>*(x[<span class="number">2</span>] + <span class="number">5</span>)**<span class="number">4</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始点</span></span><br><span class="line">x0 = np.array([<span class="number">3.9</span>, <span class="number">2</span>, -<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 线搜索（使用Armijo准则）</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">line_search</span>(<span class="params">f, xk, pk, alpha=<span class="number">1</span>, beta=<span class="number">0.5</span>, c=<span class="number">0.1</span></span>):</span><br><span class="line">    <span class="keyword">while</span> f(xk + alpha * pk) &gt; f(xk) + c * alpha * np.dot(approx_fprime(xk, f, epsilon=<span class="number">1e-6</span>), pk):</span><br><span class="line">        alpha *= beta</span><br><span class="line">    <span class="keyword">return</span> alpha</span><br><span class="line"></span><br><span class="line"><span class="comment"># DFP算法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">DFP_method</span>(<span class="params">f, x0, max_iter=<span class="number">1000</span>, tol=<span class="number">1e-6</span></span>):</span><br><span class="line">    n = <span class="built_in">len</span>(x0)</span><br><span class="line">    Hk = np.eye(n)  <span class="comment"># 初始Hessian逆估计</span></span><br><span class="line">    xk = x0</span><br><span class="line">    gk = approx_fprime(xk, f, epsilon=<span class="number">1e-6</span>)  <span class="comment"># 初始梯度估计</span></span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(max_iter):</span><br><span class="line">        pk = -np.dot(Hk, gk)  <span class="comment"># 计算搜索方向</span></span><br><span class="line">        alpha = line_search(f, xk, pk)  <span class="comment"># 使用线搜索确定步长</span></span><br><span class="line">        x_next = xk + alpha * pk  <span class="comment"># 更新参数</span></span><br><span class="line">        g_next = approx_fprime(x_next, f, epsilon=<span class="number">1e-6</span>)</span><br><span class="line">        sk = x_next - xk</span><br><span class="line">        yk = g_next - gk</span><br><span class="line">        <span class="keyword">if</span> np.linalg.norm(yk) &lt; tol:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="comment"># 更新Hessian逆估计</span></span><br><span class="line">        Hk = Hk + np.outer(sk, sk) / np.dot(sk, yk) - np.dot(np.outer(np.dot(Hk, yk), sk), Hk) / np.dot(np.dot(yk, Hk), yk)</span><br><span class="line">        xk = x_next</span><br><span class="line">        gk = g_next</span><br><span class="line">    <span class="keyword">return</span> xk</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;DFP-拟牛顿法&quot;</span>)</span><br><span class="line">start_time = time.time()</span><br><span class="line">x_min_DFP = DFP_method(f, x0)</span><br><span class="line">end_time = time.time()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;最小值点 &quot;</span>, x_min_DFP)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;最小值   ：&quot;</span>, f(x_min_DFP))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;耗时     ：&quot;</span>, end_time - start_time, <span class="string">&quot;秒&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-4-BFGS"><a href="#3-4-BFGS" class="headerlink" title="3.4 BFGS"></a>3.4 BFGS</h2><h3 id="3-4-1-基本信息"><a href="#3-4-1-基本信息" class="headerlink" title="3.4.1 基本信息"></a>3.4.1 基本信息</h3><ul>
+<li>名称：Broyden-Fletcher-Goldfarb-Shanno</li>
+<li>提出者：Broyden、Fletcher、Goldfarb和Shanno</li>
+<li>时间：1970年</li>
+</ul>
+<p>$$H_{k+1}&#x3D;H_k+\left(1+\frac{y_k^TH_ky_k}{s_k^Ty_k}\right)\frac{s_ks_k^T}{s_k^Ty_k}-\left(\frac{s_ky_k^TH_k+H_ky_ks_k^T}{s_k^Ty_k}\right)$$</p>
+<ul>
+<li><p>其中:</p>
+<ul>
+<li>$y_k:&#x3D;\nabla f(x_{k+1})-\nabla f(x_k)$</li>
+<li>$s_k:&#x3D;x_{k+1}-x_k$</li>
+<li>$H_k:&#x3D;B_k^{-1}$</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-4-2-推导"><a href="#3-4-2-推导" class="headerlink" title="3.4.2 推导"></a>3.4.2 推导</h3><p>待补充….</p>
+<h3 id="3-4-3-算法步骤"><a href="#3-4-3-算法步骤" class="headerlink" title="3.4.3 算法步骤"></a>3.4.3 算法步骤</h3><p>是的就更新矩阵部分变了，其余一样</p>
+<ol>
+<li><p><strong>初始令</strong> $H_0 &#x3D; I$</p>
+</li>
+<li><p><strong>计算梯度</strong>：$g_k &#x3D; \nabla f(x_k)$</p>
+</li>
+<li><p><strong>计算搜索方向</strong>：$d_k &#x3D; - (H_k)^{-1} g_k$</p>
+</li>
+<li><p><strong>更新参数</strong>：</p>
+<ul>
+<li>更新迭代点：$x_{k+1} &#x3D; x_k + d_k$</li>
+<li>更新矩阵：$H_{k+1}&#x3D;H_k+\left(1+\frac{y_k^TH_ky_k}{s_k^Ty_k}\right)\frac{s_ks_k^T}{s_k^Ty_k}-\left(\frac{s_ky_k^TH_k+H_ky_ks_k^T}{s_k^Ty_k}\right)$</li>
+</ul>
+</li>
+<li><p><strong>判断停止条件</strong>：</p>
+<ul>
+<li>如果 $| g_k | \leq \epsilon$，则算法收敛，停止迭代</li>
+<li>否则，将 $k$ 更新为 $k + 1$，并回到步骤 2</li>
+</ul>
+</li>
+</ol>
+<h3 id="3-4-4-收敛性"><a href="#3-4-4-收敛性" class="headerlink" title="3.4.4 收敛性"></a>3.4.4 收敛性</h3><p>Q-超线性收敛速度</p>
+<h3 id="3-4-5-代码实现"><a href="#3-4-5-代码实现" class="headerlink" title="3.4.5 代码实现"></a>3.4.5 代码实现</h3><p>注意此处实际上是阻尼拟牛顿法的实现</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> scipy.optimize <span class="keyword">import</span> approx_fprime</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义目标函数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">f</span>(<span class="params">x</span>):</span><br><span class="line">    <span class="keyword">return</span> (x[<span class="number">0</span>] - <span class="number">4</span>)**<span class="number">4</span> + (x[<span class="number">1</span>] - <span class="number">3</span>)**<span class="number">2</span> + <span class="number">4</span>*(x[<span class="number">2</span>] + <span class="number">5</span>)**<span class="number">4</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始点</span></span><br><span class="line">x0 = np.array([<span class="number">3.9</span>, <span class="number">2</span>, -<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 线搜索（使用Armijo准则）</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">line_search</span>(<span class="params">f, xk, pk, alpha=<span class="number">1</span>, beta=<span class="number">0.5</span>, c=<span class="number">0.1</span></span>):</span><br><span class="line">    <span class="keyword">while</span> f(xk + alpha * pk) &gt; f(xk) + c * alpha * np.dot(approx_fprime(xk, f, epsilon=<span class="number">1e-6</span>), pk):</span><br><span class="line">        alpha *= beta</span><br><span class="line">    <span class="keyword">return</span> alpha</span><br><span class="line"></span><br><span class="line"><span class="comment"># BFGS算法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">BFGS_method</span>(<span class="params">f, x0, max_iter=<span class="number">1000</span>, tol=<span class="number">1e-6</span></span>):</span><br><span class="line">    n = <span class="built_in">len</span>(x0)</span><br><span class="line">    Hk = np.eye(n)  <span class="comment"># 初始Hessian逆估计</span></span><br><span class="line">    xk = x0</span><br><span class="line">    gk = approx_fprime(xk, f, epsilon=<span class="number">1e-6</span>)  <span class="comment"># 初始梯度估计</span></span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(max_iter):</span><br><span class="line">        pk = -np.dot(Hk, gk)  <span class="comment"># 计算搜索方向</span></span><br><span class="line">        alpha = line_search(f, xk, pk)  <span class="comment"># 使用线搜索确定步长</span></span><br><span class="line">        x_next = xk + alpha * pk  <span class="comment"># 更新参数</span></span><br><span class="line">        g_next = approx_fprime(x_next, f, epsilon=<span class="number">1e-6</span>)</span><br><span class="line">        sk = x_next - xk</span><br><span class="line">        yk = g_next - gk</span><br><span class="line">        <span class="keyword">if</span> np.linalg.norm(yk) &lt; tol:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="comment"># 更新Hessian逆估计</span></span><br><span class="line">        rho_k = <span class="number">1.0</span> / np.dot(yk, sk)</span><br><span class="line">        A1 = np.eye(n) - rho_k * np.outer(sk, yk)</span><br><span class="line">        A2 = np.eye(n) - rho_k * np.outer(yk, sk)</span><br><span class="line">        Hk = np.dot(np.dot(A1, Hk), A2) + rho_k * np.outer(sk, sk)</span><br><span class="line">        xk = x_next</span><br><span class="line">        gk = g_next</span><br><span class="line">    <span class="keyword">return</span> xk, f(xk)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;BFGS-拟牛顿法&quot;</span>)</span><br><span class="line">start_time = time.time()</span><br><span class="line">x_min_BFGS, min_value = BFGS_method(f, x0)</span><br><span class="line">end_time = time.time()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;最小值点 &quot;</span>, x_min_BFGS)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;最小值   ：&quot;</span>, f(x_min_BFGS))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;耗时     ：&quot;</span>, end_time - start_time, <span class="string">&quot;秒&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/538910657">https://zhuanlan.zhihu.com/p/538910657</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/306635632">https://zhuanlan.zhihu.com/p/306635632</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/338829644">https://zhuanlan.zhihu.com/p/338829644</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/144736223">https://zhuanlan.zhihu.com/p/144736223</a></li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://blog.fnas64.us.kg">Feng Weiming</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://blog.fnas64.us.kg/2024/05/03/%E6%9C%80%E4%BC%98%E5%8C%96-%E6%97%A0%E7%BA%A6%E6%9D%9F%E4%BC%98%E5%8C%96/">http://blog.fnas64.us.kg/2024/05/03/%E6%9C%80%E4%BC%98%E5%8C%96-%E6%97%A0%E7%BA%A6%E6%9D%9F%E4%BC%98%E5%8C%96/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://blog.fnas64.us.kg" target="_blank">迎风起降的小站</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%97%A0%E7%BA%A6%E6%9D%9F%E4%BC%98%E5%8C%96/">无约束优化</a><a class="post-meta__tags" href="/tags/%E6%A2%AF%E5%BA%A6%E6%B3%95/">梯度法</a><a class="post-meta__tags" href="/tags/%E6%9C%80%E9%80%9F%E4%B8%8B%E9%99%8D%E6%B3%95/">最速下降法</a><a class="post-meta__tags" href="/tags/%E7%89%9B%E9%A1%BF%E6%B3%95/">牛顿法</a><a class="post-meta__tags" href="/tags/%E6%8B%9F%E7%89%9B%E9%A1%BF%E6%B3%95/">拟牛顿法</a></div><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2024/11/19/hello-world/" title="Hello World"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">Hello World</div></div><div class="info-2"><div class="info-item-1">Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick StartCreate a new post1$ hexo new &quot;My New Post&quot;  More info: Writing Run server1$ hexo server  More info: Server Generate static files1$ hexo generate  More info: Generating Deploy to remote sites1$ hexo deploy  More info: Deployment </div></div></div></a><a class="pagination-related" href="/2024/05/03/%E6%9C%80%E4%BC%98%E5%8C%96-%E4%B8%80%E7%BB%B4%E6%90%9C%E7%B4%A2/" title="[最优化]线性搜索"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">[最优化]线性搜索</div></div><div class="info-2"><div class="info-item-1">1.直接搜索1.1 黄金分割法1.1.1 基本信息 适用范围：单峰函数求极小值问题  特点：  迭代逼近极小值点：    黄金分割法通过不断地迭代，在每一步中缩小搜索区间，以逼近极小值点。每次迭代都会根据黄金比例将当前搜索区间分成两部分，并选择较小函数值所在的部分进行下一步的搜索。  不依赖梯度信息：    与梯度下降方法不同，黄金分割法不需要函数的梯度信息。它是一种无梯度的优化方法，适用于那些无法或难以求得梯度信息的问题。    基本原理：  黄金分割法是建立在区间消去法原理基础上的试探方法，即在搜索区间[a,b]内适当插入两点a1, a2，并计算其函数值。 a1, a2将区间分成三段，应用函数的单峰性质，通过函数值大小的比较，删去其中一段，是搜索区间得以缩小。然后再在保留下来的区间上作同样的处理，如此迭代下去，搜索区间无限缩小，从而得到极小点的数值近似解。    1.1.2 算法流程  初始化： $[a_0, b_0], \quad a_0 &lt; b_0$  计算内部点： $c_k &#x3D; a_k + \frac{b_k - a_k}{\phi}, \quad...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Feng Weiming</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>关注我</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/fengwm64" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:fengweimingboeing@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">这是我的博客</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#0-%E5%87%A0%E7%A7%8D%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95%E5%85%B3%E7%B3%BB"><span class="toc-number">1.</span> <span class="toc-text">0. 几种优化算法关系</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E6%A2%AF%E5%BA%A6%E6%B3%95%EF%BC%88Gradient-Descent%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">1. 梯度法（Gradient Descent）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%E5%8E%9F%E7%90%86"><span class="toc-number">2.1.</span> <span class="toc-text">1.1 原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4"><span class="toc-number">2.2.</span> <span class="toc-text">1.2 算法步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.3.</span> <span class="toc-text">1.3 代码实现</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E6%9C%80%E9%80%9F%E6%B3%95%EF%BC%88Steepest-Descent%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">2. 最速法（Steepest Descent）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E5%8E%9F%E7%90%86"><span class="toc-number">3.1.</span> <span class="toc-text">2.1 原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4"><span class="toc-number">3.2.</span> <span class="toc-text">2.2 算法步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 代码实现</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E7%89%9B%E9%A1%BF%E6%B3%95%EF%BC%88Newton-Method%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">3.牛顿法（Newton Method）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E5%8E%9F%E7%90%86"><span class="toc-number">4.1.</span> <span class="toc-text">3.1 原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4"><span class="toc-number">4.2.</span> <span class="toc-text">3.2 算法步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-1"><span class="toc-number">4.3.</span> <span class="toc-text">3.3 代码实现</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E6%8B%9F%E7%89%9B%E9%A1%BF%E6%B3%95%EF%BC%88Quasi-Newton-Methods%EF%BC%89"><span class="toc-number">5.</span> <span class="toc-text">3.拟牛顿法（Quasi-Newton Methods）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E5%89%8D%E8%A8%80"><span class="toc-number">5.1.</span> <span class="toc-text">3.1 前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-SR1"><span class="toc-number">5.2.</span> <span class="toc-text">3.2 SR1</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-1-%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF"><span class="toc-number">5.2.1.</span> <span class="toc-text">3.2.1 基本信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-2-%E6%8E%A8%E5%AF%BC"><span class="toc-number">5.2.2.</span> <span class="toc-text">3.2.2 推导</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-3-%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4"><span class="toc-number">5.2.3.</span> <span class="toc-text">3.2.3 算法步骤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-4-%E6%94%B6%E6%95%9B%E6%80%A7"><span class="toc-number">5.2.4.</span> <span class="toc-text">3.2.4 收敛性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-5-%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">5.2.5.</span> <span class="toc-text">3.2.5 代码实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-DFP"><span class="toc-number">5.3.</span> <span class="toc-text">3.3 DFP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-1-%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF"><span class="toc-number">5.3.1.</span> <span class="toc-text">3.3.1 基本信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-2-%E6%8E%A8%E5%AF%BC"><span class="toc-number">5.3.2.</span> <span class="toc-text">3.3.2 推导</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-3-%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4"><span class="toc-number">5.3.3.</span> <span class="toc-text">3.3.3 算法步骤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-4-%E6%94%B6%E6%95%9B%E6%80%A7"><span class="toc-number">5.3.4.</span> <span class="toc-text">3.3.4 收敛性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-5-%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">5.3.5.</span> <span class="toc-text">3.3.5 代码实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4-BFGS"><span class="toc-number">5.4.</span> <span class="toc-text">3.4 BFGS</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-1-%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF"><span class="toc-number">5.4.1.</span> <span class="toc-text">3.4.1 基本信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-2-%E6%8E%A8%E5%AF%BC"><span class="toc-number">5.4.2.</span> <span class="toc-text">3.4.2 推导</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-3-%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4"><span class="toc-number">5.4.3.</span> <span class="toc-text">3.4.3 算法步骤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-4-%E6%94%B6%E6%95%9B%E6%80%A7"><span class="toc-number">5.4.4.</span> <span class="toc-text">3.4.4 收敛性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-5-%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">5.4.5.</span> <span class="toc-text">3.4.5 代码实现</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">6.</span> <span class="toc-text">参考</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/11/19/hello-world/" title="Hello World">Hello World</a><time datetime="2024-11-19T07:36:35.247Z" title="发表于 2024-11-19 15:36:35">2024-11-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/05/03/%E6%9C%80%E4%BC%98%E5%8C%96-%E6%97%A0%E7%BA%A6%E6%9D%9F%E4%BC%98%E5%8C%96/" title="[最优化]无约束优化">[最优化]无约束优化</a><time datetime="2024-05-03T07:47:04.000Z" title="发表于 2024-05-03 15:47:04">2024-05-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/05/03/%E6%9C%80%E4%BC%98%E5%8C%96-%E4%B8%80%E7%BB%B4%E6%90%9C%E7%B4%A2/" title="[最优化]线性搜索">[最优化]线性搜索</a><time datetime="2024-05-03T03:06:21.000Z" title="发表于 2024-05-03 11:06:21">2024-05-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/04/24/%E6%9C%80%E4%BC%98%E5%8C%96-%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E4%B9%98%E5%AD%90%E6%B3%95/" title="[最优化]拉格朗日乘子法">[最优化]拉格朗日乘子法</a><time datetime="2024-04-24T14:13:31.000Z" title="发表于 2024-04-24 22:13:31">2024-04-24</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/04/21/wsl2-bochs%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" title="WSL2-Bochs 操作系统实验环境配置">WSL2-Bochs 操作系统实验环境配置</a><time datetime="2023-04-21T11:45:48.000Z" title="发表于 2023-04-21 19:45:48">2023-04-21</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 - 2024 By Feng Weiming</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
