@@ -17,7 +17,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/20250201231635.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/20250201232800.png">
 <meta property="article:published_time" content="2025-02-01T14:49:40.000Z">
-<meta property="article:modified_time" content="2025-02-01T15:30:24.969Z">
+<meta property="article:modified_time" content="2025-02-01T16:27:07.273Z">
 <meta property="article:author" content="fengwm">
 <meta property="article:tag" content="WSL2">
 <meta name="twitter:card" content="summary">
@@ -129,7 +129,7 @@
     
     
       <div id="toc">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#0-%E8%B0%83%E6%95%B4-WSL2-%E7%BD%91%E7%BB%9C%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">0. 调整 WSL2 网络设置</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%AE%89%E8%A3%85-miniconda"><span class="toc-number">2.</span> <span class="toc-text">1. 安装 miniconda</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%AE%89%E8%A3%85-CUDA"><span class="toc-number">3.</span> <span class="toc-text">2. 安装 CUDA</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E6%A3%80%E6%9F%A5%E9%A9%B1%E5%8A%A8"><span class="toc-number">3.1.</span> <span class="toc-text">2.1 检查驱动</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0-%E8%B0%83%E6%95%B4-WSL2-%E7%BD%91%E7%BB%9C%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">0. 调整 WSL2 网络设置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%AE%89%E8%A3%85-miniconda"><span class="toc-number">2.</span> <span class="toc-text">1. 安装 miniconda</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%AE%89%E8%A3%85-CUDA"><span class="toc-number">3.</span> <span class="toc-text">2. 安装 CUDA</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E6%A3%80%E6%9F%A5%E9%A9%B1%E5%8A%A8"><span class="toc-number">3.1.</span> <span class="toc-text">2.1 检查驱动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-CUDA-Toolkit"><span class="toc-number">3.2.</span> <span class="toc-text">2.2 CUDA Toolkit</span></a></li></ol></li></ol>
       </div>
     
   </span>
@@ -156,7 +156,7 @@
       
         <time datetime="2025-02-01T14:49:40.000Z" class="dt-published" itemprop="datePublished">2025-02-01</time>
         
-        (Updated: <time datetime="2025-02-01T15:30:24.969Z" class="dt-updated" itemprop="dateModified">2025-02-01</time>)
+        (Updated: <time datetime="2025-02-01T16:27:07.273Z" class="dt-updated" itemprop="dateModified">2025-02-02</time>)
         
       
     </div>
@@ -181,7 +181,7 @@
   
 
   <div class="content e-content" itemprop="articleBody">
-    <h1 id="0-调整-WSL2-网络设置"><a href="#0-调整-WSL2-网络设置" class="headerlink" title="0. 调整 WSL2 网络设置"></a>0. 调整 WSL2 网络设置</h1><ul>
+    <h2 id="0-调整-WSL2-网络设置"><a href="#0-调整-WSL2-网络设置" class="headerlink" title="0. 调整 WSL2 网络设置"></a>0. 调整 WSL2 网络设置</h2><ul>
 <li><p>搜索 <code>WSL Settings</code><br><img src="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/20250201231525.png" alt="20250201231525"></p>
 </li>
 <li><p><code>网络</code> 选项卡</p>
@@ -191,7 +191,7 @@
 <li><p>终端输入 <code>wsl --shutdown; wsl</code> 重启 WSL</p>
 </li>
 </ul>
-<h1 id="1-安装-miniconda"><a href="#1-安装-miniconda" class="headerlink" title="1. 安装 miniconda"></a>1. 安装 miniconda</h1><ul>
+<h2 id="1-安装-miniconda"><a href="#1-安装-miniconda" class="headerlink" title="1. 安装 miniconda"></a>1. 安装 miniconda</h2><ul>
 <li>官方安装指南：<a target="_blank" rel="noopener" href="https://docs.anaconda.com/miniconda/install/#quick-command-line-install">https://docs.anaconda.com/miniconda/install/#quick-command-line-install</a></li>
 </ul>
 <p>具体命令如下：</p>
@@ -203,11 +203,14 @@
 <li><code>source ~/miniconda3/bin/activate</code></li>
 <li><code>conda init --all</code></li>
 </ul>
-<h1 id="2-安装-CUDA"><a href="#2-安装-CUDA" class="headerlink" title="2. 安装 CUDA"></a>2. 安装 CUDA</h1><h2 id="2-1-检查驱动"><a href="#2-1-检查驱动" class="headerlink" title="2.1 检查驱动"></a>2.1 检查驱动</h2><ul>
+<h2 id="2-安装-CUDA"><a href="#2-安装-CUDA" class="headerlink" title="2. 安装 CUDA"></a>2. 安装 CUDA</h2><h3 id="2-1-检查驱动"><a href="#2-1-检查驱动" class="headerlink" title="2.1 检查驱动"></a>2.1 检查驱动</h3><ul>
 <li>WSL中输入：<code>nvidia-smi</code><blockquote>
 <p>正常来说，在Windows系统上安装了Nvidia显卡驱动，WSL里无需手动安装驱动。正常输出如下：<br><img src="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/20250201232800.png" alt="20250201232800"></p>
 </blockquote>
 </li>
+</ul>
+<h3 id="2-2-CUDA-Toolkit"><a href="#2-2-CUDA-Toolkit" class="headerlink" title="2.2 CUDA Toolkit"></a>2.2 CUDA Toolkit</h3><ul>
+<li>官方指南：<a target="_blank" rel="noopener" href="https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=WSL-Ubuntu&target_version=2.0&target_type=runfile_local">https://developer.nvidia.com/cuda-downloads?target_os=Linux&amp;target_arch=x86_64&amp;Distribution=WSL-Ubuntu&amp;target_version=2.0&amp;target_type=runfile_local</a></li>
 </ul>
 
   </div>
@@ -244,7 +247,7 @@
     
     
       <div id="toc-footer" style="display: none">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#0-%E8%B0%83%E6%95%B4-WSL2-%E7%BD%91%E7%BB%9C%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">0. 调整 WSL2 网络设置</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%AE%89%E8%A3%85-miniconda"><span class="toc-number">2.</span> <span class="toc-text">1. 安装 miniconda</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%AE%89%E8%A3%85-CUDA"><span class="toc-number">3.</span> <span class="toc-text">2. 安装 CUDA</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E6%A3%80%E6%9F%A5%E9%A9%B1%E5%8A%A8"><span class="toc-number">3.1.</span> <span class="toc-text">2.1 检查驱动</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0-%E8%B0%83%E6%95%B4-WSL2-%E7%BD%91%E7%BB%9C%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">0. 调整 WSL2 网络设置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%AE%89%E8%A3%85-miniconda"><span class="toc-number">2.</span> <span class="toc-text">1. 安装 miniconda</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%AE%89%E8%A3%85-CUDA"><span class="toc-number">3.</span> <span class="toc-text">2. 安装 CUDA</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E6%A3%80%E6%9F%A5%E9%A9%B1%E5%8A%A8"><span class="toc-number">3.1.</span> <span class="toc-text">2.1 检查驱动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-CUDA-Toolkit"><span class="toc-number">3.2.</span> <span class="toc-text">2.2 CUDA Toolkit</span></a></li></ol></li></ol>
       </div>
     
 
