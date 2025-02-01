@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="1.修改配置文件1.1 修改.bashrc文件客户端执行：  vi ~&#x2F;.bashrc  按i进入编辑模式，按方向键到文件最后一行，输入export TERM&#x3D;xterm-color     按Esc键退出编辑模式，输入:wq保存退出  使.bashrc配置生效：source ~&#x2F;.bashrc   1.2 下载 spark在主节点执行:  启动HDFS服务(已经启动直接下一步):~&#x2F;hadoop">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[部署]Spark-3 Spark部署">
+<meta property="og:url" content="http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/index.html">
+<meta property="og:site_name" content="迎风起降的小站">
+<meta property="og:description" content="1.修改配置文件1.1 修改.bashrc文件客户端执行：  vi ~&#x2F;.bashrc  按i进入编辑模式，按方向键到文件最后一行，输入export TERM&#x3D;xterm-color     按Esc键退出编辑模式，输入:wq保存退出  使.bashrc配置生效：source ~&#x2F;.bashrc   1.2 下载 spark在主节点执行:  启动HDFS服务(已经启动直接下一步):~&#x2F;hadoop">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202404292240144.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202404292257700.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202405020927048.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202405020930661.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202405020941828.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202405020945282.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202405021003091.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202405021043271.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202405021047418.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202405021116322.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202405021152426.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202405021309487.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202405021317280.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202405021310029.png">
+<meta property="article:published_time" content="2024-05-02T01:16:36.000Z">
+<meta property="article:modified_time" content="2025-02-01T12:55:16.507Z">
+<meta property="article:author" content="fengwm">
+<meta property="article:tag" content="Spark">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202404292240144.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>[部署]Spark-3 Spark部署</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-4/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2024/04/30/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-2/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&text=[部署]Spark-3 Spark部署"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&title=[部署]Spark-3 Spark部署"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&is_video=false&description=[部署]Spark-3 Spark部署"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=[部署]Spark-3 Spark部署&body=Check out this article: http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&title=[部署]Spark-3 Spark部署"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&title=[部署]Spark-3 Spark部署"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&title=[部署]Spark-3 Spark部署"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&title=[部署]Spark-3 Spark部署"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&name=[部署]Spark-3 Spark部署&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&t=[部署]Spark-3 Spark部署"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">1.</span> <span class="toc-text">1.修改配置文件</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%E4%BF%AE%E6%94%B9-bashrc%E6%96%87%E4%BB%B6"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 修改.bashrc文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%E4%B8%8B%E8%BD%BD-spark"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 下载 spark</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE"><span class="toc-number">1.3.</span> <span class="toc-text">1.3 修改配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-1-spark-env"><span class="toc-number">1.3.1.</span> <span class="toc-text">1.3.1 spark-env</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-2-slaves"><span class="toc-number">1.3.2.</span> <span class="toc-text">1.3.2 slaves</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-3-spark-defaults"><span class="toc-number">1.3.3.</span> <span class="toc-text">1.3.3 spark-defaults</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-4-spark-config"><span class="toc-number">1.3.4.</span> <span class="toc-text">1.3.4 spark-config</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%AE%89%E8%A3%85spark"><span class="toc-number">2.</span> <span class="toc-text">2.安装spark</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E6%8B%B7%E8%B4%9D"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 拷贝</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-HDFS%E4%B8%AD%E5%BB%BA%E7%AB%8B%E6%97%A5%E5%BF%97%E7%9B%AE%E5%BD%95"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 HDFS中建立日志目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%E5%90%AF%E5%8A%A8-spark"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 启动 spark</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-%E9%AA%8C%E8%AF%81"><span class="toc-number">2.4.</span> <span class="toc-text">2.4 验证</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E8%BF%90%E8%A1%8Cspark%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F"><span class="toc-number">3.</span> <span class="toc-text">3.运行spark应用程序</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E5%88%9B%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9-%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 创建文件夹&amp;上传文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E5%90%AF%E5%8A%A8-Spark-Shell"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 启动 Spark Shell</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E5%81%9C%E6%AD%A2%E9%9B%86%E7%BE%A4"><span class="toc-number">4.</span> <span class="toc-text">4.停止集群</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        [部署]Spark-3 Spark部署
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">fengwm</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-05-02T01:16:36.000Z" class="dt-published" itemprop="datePublished">2024-05-02</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E9%83%A8%E7%BD%B2%E8%AE%B0%E5%BD%95/">部署记录</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/Spark/" rel="tag">Spark</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="1-修改配置文件"><a href="#1-修改配置文件" class="headerlink" title="1.修改配置文件"></a>1.修改配置文件</h1><h2 id="1-1-修改-bashrc文件"><a href="#1-1-修改-bashrc文件" class="headerlink" title="1.1 修改.bashrc文件"></a>1.1 修改.bashrc文件</h2><p><strong>客户端</strong>执行：</p>
+<ul>
+<li><p><code>vi ~/.bashrc</code></p>
+</li>
+<li><p>按<code>i</code>进入编辑模式，按方向键到文件最后一行，输入<code>export TERM=xterm-color</code></p>
+</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202404292240144.png"></p>
+<ul>
+<li><p>按<code>Esc</code>键退出编辑模式，输入<code>:wq</code>保存退出</p>
+</li>
+<li><p>使<code>.bashrc</code>配置生效：<code>source ~/.bashrc</code></p>
+</li>
+</ul>
+<h2 id="1-2-下载-spark"><a href="#1-2-下载-spark" class="headerlink" title="1.2 下载 spark"></a>1.2 下载 spark</h2><p>在<strong>主节点</strong>执行:</p>
+<ul>
+<li><p>启动HDFS服务(已经启动直接下一步):<code>~/hadoop-2.10.1/sbin/start-dfs.sh</code></p>
+</li>
+<li><p>下载Spark安装包：<code>wget http://archive.apache.org/dist/spark/spark-2.4.7/spark-2.4.7-bin-without-hadoop.tgz</code></p>
+</li>
+<li><p>解压安装包：<code>tar -zxvf spark-2.4.7-bin-without-hadoop.tgz</code></p>
+</li>
+<li><p>改名：<code>mv ~/spark-2.4.7-bin-without-hadoop ~/spark-2.4.7</code></p>
+</li>
+</ul>
+<p>上述步骤完成后：<br><img src="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202404292257700.png"></p>
+<h2 id="1-3-修改配置"><a href="#1-3-修改配置" class="headerlink" title="1.3 修改配置"></a>1.3 修改配置</h2><p>在<strong>主节点</strong>执行以下修改:</p>
+<h3 id="1-3-1-spark-env"><a href="#1-3-1-spark-env" class="headerlink" title="1.3.1 spark-env"></a>1.3.1 spark-env</h3><ul>
+<li><p><code>cp /home/dase-dis/spark-2.4.7/conf/spark-env.sh.template /home/dase-dis/spark-2.4.7/conf/spark-env.sh</code></p>
+</li>
+<li><p><code>vi /home/dase-dis/spark-2.4.7/conf/spark-env.sh</code></p>
+</li>
+</ul>
+<p>修改为:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">因为下载的是Hadoop Free版本的Spark, 所以需要配置Hadoop的路径</span></span><br><span class="line">export HADOOP_HOME=/home/dase-dis/hadoop-2.10.1</span><br><span class="line">export SPARK_DIST_CLASSPATH=$($HADOOP_HOME/bin/hadoop classpath)</span><br><span class="line">export LD_LIBRARY_PATH=$HADOOP_HOME/lib/native:$LD_LIBRARY_PATH</span><br><span class="line"></span><br><span class="line">export SPARK_MASTER_HOST=ecnu01 #主节点主机名</span><br><span class="line">export SPARK_MASTERPORT=7077    #端口号</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202405020927048.png"></p>
+<h3 id="1-3-2-slaves"><a href="#1-3-2-slaves" class="headerlink" title="1.3.2 slaves"></a>1.3.2 slaves</h3><ul>
+<li><p><code>cp spark-2.4.7/conf/slaves.template spark-2.4.7/conf/slaves</code></p>
+</li>
+<li><p><code>vi spark-2.4.7/conf/slaves</code></p>
+</li>
+</ul>
+<p>修改为:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">localhost</span></span><br><span class="line">ecnu02</span><br><span class="line">ecnu03</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202405020930661.png"></p>
+<h3 id="1-3-3-spark-defaults"><a href="#1-3-3-spark-defaults" class="headerlink" title="1.3.3 spark-defaults"></a>1.3.3 spark-defaults</h3><ul>
+<li><p><code>cp spark-2.4.7/conf/spark-defaults.conf.template spark-2.4.7/conf/spark-defaults.conf</code></p>
+</li>
+<li><p><code>vi spark-2.4.7/conf/spark-defaults.conf</code></p>
+</li>
+</ul>
+<p>修改为:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">spark.eventLog.enabled=true</span><br><span class="line">spark.eventLog.dir=hdfs://ecnu01:9000/tmp/spark_history</span><br><span class="line">spark.history.fs.logDirectory=hdfs://ecnu01:9000/tmp/spark_history</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202405020941828.png"></p>
+<h3 id="1-3-4-spark-config"><a href="#1-3-4-spark-config" class="headerlink" title="1.3.4 spark-config"></a>1.3.4 spark-config</h3><ul>
+<li><code>vi spark-2.4.7/sbin/spark-config.sh</code></li>
+</ul>
+<p>追加:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME=/home/dase-dis/jdk1.8.0_202</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202405020945282.png"></p>
+<h1 id="2-安装spark"><a href="#2-安装spark" class="headerlink" title="2.安装spark"></a>2.安装spark</h1><h2 id="2-1-拷贝"><a href="#2-1-拷贝" class="headerlink" title="2.1 拷贝"></a>2.1 拷贝</h2><p>本步骤将spark修改好的安装包拷贝到其他三台机:</p>
+<ul>
+<li><p><code>scp -r spark-2.4.7 dase-dis@ecnu02:~/</code></p>
+</li>
+<li><p><code>scp -r spark-2.4.7 dase-dis@ecnu03:~/</code></p>
+</li>
+<li><p><code>scp -r spark-2.4.7 dase-dis@ecnu04:~/</code></p>
+</li>
+</ul>
+<h2 id="2-2-HDFS中建立日志目录"><a href="#2-2-HDFS中建立日志目录" class="headerlink" title="2.2 HDFS中建立日志目录"></a>2.2 HDFS中建立日志目录</h2><ul>
+<li><code>~/hadoop-2.10.1/bin/hdfs dfs -mkdir -p /tmp/spark_history</code></li>
+</ul>
+<h2 id="2-3-启动-spark"><a href="#2-3-启动-spark" class="headerlink" title="2.3 启动 spark"></a>2.3 启动 spark</h2><p>千辛万苦, 终于到启动了<br><img src="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202405021003091.png" alt="" width="25%"></p>
+<p>在<strong>主节点</strong>执行:</p>
+<ul>
+<li><p>启动spark: <code>~/spark-2.4.7/sbin/start-all.sh</code></p>
+</li>
+<li><p>启动日志服务器: <code>~/spark-2.4.7/sbin/start-history-server.sh</code></p>
+</li>
+<li><p><strong>主节点:</strong></p>
+</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202405021043271.png"></p>
+<ul>
+<li><strong>从节点:</strong></li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202405021047418.png"></p>
+<p><strong>错误处理:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">dase-dis@ecnu01:~$ ~/spark-2.4.7/sbin/start-all.sh</span><br><span class="line">starting org.apache.spark.deploy.master.Master, logging to /home/dase-dis/spark-2.4.7/logs/spark-dase-dis-org.apache.spark.deploy.master.Master-1-ecnu01.out</span><br><span class="line">ecnu02: starting org.apache.spark.deploy.worker.Worker, logging to /home/dase-dis/spark-2.4.7/logs/spark-dase-dis-org.apache.spark.deploy.worker.Worker-1-ecnu02.out</span><br><span class="line">ecnu03: starting org.apache.spark.deploy.worker.Worker, logging to /home/dase-dis/spark-2.4.7/logs/spark-dase-dis-org.apache.spark.deploy.worker.Worker-1-ecnu03.out</span><br><span class="line">ecnu02: failed to launch: nice -n 0 /home/dase-dis/spark-2.4.7/bin/spark-class org.apache.spark.deploy.worker.Worker --webui-port 8081 spark://172.19.39.254:7077</span><br><span class="line">ecnu02:         at io.netty.channel.AbstractChannel.bind(AbstractChannel.java:248)</span><br><span class="line">ecnu02:         at io.netty.bootstrap.AbstractBootstrap$2.run(AbstractBootstrap.java:356)</span><br><span class="line">ecnu02:         at io.netty.util.concurrent.AbstractEventExecutor.safeExecute(AbstractEventExecutor.java:164)</span><br><span class="line">ecnu02:         at io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:472)</span><br><span class="line">ecnu02:         at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:500)</span><br><span class="line">ecnu02:         at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:989)</span><br><span class="line">ecnu02:         at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)</span><br><span class="line">ecnu02:         at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)</span><br><span class="line">ecnu02:         at java.lang.Thread.run(Thread.java:748)</span><br><span class="line">ecnu02:   24/05/02 10:23:10 INFO util.ShutdownHookManager: Shutdown hook called</span><br><span class="line">ecnu02: full log in /home/dase-dis/spark-2.4.7/logs/spark-dase-dis-org.apache.spark.deploy.worker.Worker-1-ecnu02.out</span><br></pre></td></tr></table></figure>
+
+<p><strong>请检查hosts文件设置, 文章<code>[大数据]Spark-1 SSH &amp; JDK部署</code></strong></p>
+<h2 id="2-4-验证"><a href="#2-4-验证" class="headerlink" title="2.4 验证"></a>2.4 验证</h2><p>浏览器访问: <code>http://主节点IP:8080/</code>，（<strong>如果主节点是云服务器记得把防火墙打开</strong>）</p>
+<p><img src="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202405021116322.png"></p>
+<p>可以看到有两个worker在线, <strong>大功告成</strong></p>
+<h1 id="3-运行spark应用程序"><a href="#3-运行spark应用程序" class="headerlink" title="3.运行spark应用程序"></a>3.运行spark应用程序</h1><p>好不容易搞好了, 来玩一下: </p>
+<h2 id="3-1-创建文件夹-上传文件"><a href="#3-1-创建文件夹-上传文件" class="headerlink" title="3.1 创建文件夹&amp;上传文件"></a>3.1 创建文件夹&amp;上传文件</h2><ul>
+<li><p>创建<code>spark_input</code>文件夹: <code>~/hadoop-2.10.1/bin/hdfs dfs -mkdir -p spark_input</code></p>
+</li>
+<li><p>上传文件<code>RELEASE</code>到<code>spark_input</code>: <code>~/hadoop-2.10.1/bin/hdfs dfs -put ~/spark-2.4.7/RELEASE spark_input/</code></p>
+</li>
+</ul>
+<p>在<code>hadood</code>的页面可以看到, 文件<code>RELEASE</code>存储在两个节点中: </p>
+<p><img src="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202405021152426.png"></p>
+<h2 id="3-2-启动-Spark-Shell"><a href="#3-2-启动-Spark-Shell" class="headerlink" title="3.2 启动 Spark Shell"></a>3.2 启动 Spark Shell</h2><ul>
+<li>启动<code>spark-shell</code>: <code>~/spark-2.4.7/bin/spark-shell --master spark://ecnu01:7077</code></li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202405021309487.png"></p>
+<ul>
+<li>键入以下<code>Scala</code>代码:</li>
+</ul>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> sc = spark.sparkContext</span><br><span class="line"><span class="keyword">val</span> textFile = sc.textFile(<span class="string">&quot;hdfs://ecnu01:9000/user/dase-dis/spark_input/RELEASE&quot;</span>)</span><br><span class="line"><span class="keyword">val</span> counts = textFile.flatMap(line =&gt; line.split(<span class="string">&quot; &quot;</span>)).map(word =&gt; (word, <span class="number">1</span>)).reduceByKey(_ + _)</span><br><span class="line">counts.collect().foreach(println)</span><br></pre></td></tr></table></figure>
+
+<p>shell输出:</p>
+<p><img src="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202405021317280.png"></p>
+<p>可以在网页查看到正在运行的任务信息:</p>
+<p><img src="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202405021310029.png"></p>
+<p>到此Spark集群就已经顺利搭建完毕了</p>
+<h1 id="4-停止集群"><a href="#4-停止集群" class="headerlink" title="4.停止集群"></a>4.停止集群</h1><p>如果你希望停止集群:</p>
+<ul>
+<li><p>停止<code>Spark</code>: <code>/spark-2.4.7/sbin/stop-all.sh</code></p>
+</li>
+<li><p>停止<code>Spark</code>日志服务: <code>/spark-2.4.7/sbin/stop-history-server.sh</code></p>
+</li>
+<li><p>停止<code>HDFS</code>服务: <code>/hadoop-2.10.1/sbin/stop-dfs.sh</code></p>
+</li>
+</ul>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">关于</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">1.</span> <span class="toc-text">1.修改配置文件</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%E4%BF%AE%E6%94%B9-bashrc%E6%96%87%E4%BB%B6"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 修改.bashrc文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%E4%B8%8B%E8%BD%BD-spark"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 下载 spark</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE"><span class="toc-number">1.3.</span> <span class="toc-text">1.3 修改配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-1-spark-env"><span class="toc-number">1.3.1.</span> <span class="toc-text">1.3.1 spark-env</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-2-slaves"><span class="toc-number">1.3.2.</span> <span class="toc-text">1.3.2 slaves</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-3-spark-defaults"><span class="toc-number">1.3.3.</span> <span class="toc-text">1.3.3 spark-defaults</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-4-spark-config"><span class="toc-number">1.3.4.</span> <span class="toc-text">1.3.4 spark-config</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%AE%89%E8%A3%85spark"><span class="toc-number">2.</span> <span class="toc-text">2.安装spark</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E6%8B%B7%E8%B4%9D"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 拷贝</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-HDFS%E4%B8%AD%E5%BB%BA%E7%AB%8B%E6%97%A5%E5%BF%97%E7%9B%AE%E5%BD%95"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 HDFS中建立日志目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%E5%90%AF%E5%8A%A8-spark"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 启动 spark</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-%E9%AA%8C%E8%AF%81"><span class="toc-number">2.4.</span> <span class="toc-text">2.4 验证</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E8%BF%90%E8%A1%8Cspark%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F"><span class="toc-number">3.</span> <span class="toc-text">3.运行spark应用程序</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E5%88%9B%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9-%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 创建文件夹&amp;上传文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E5%90%AF%E5%8A%A8-Spark-Shell"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 启动 Spark Shell</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E5%81%9C%E6%AD%A2%E9%9B%86%E7%BE%A4"><span class="toc-number">4.</span> <span class="toc-text">4.停止集群</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&text=[部署]Spark-3 Spark部署"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&title=[部署]Spark-3 Spark部署"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&is_video=false&description=[部署]Spark-3 Spark部署"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=[部署]Spark-3 Spark部署&body=Check out this article: http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&title=[部署]Spark-3 Spark部署"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&title=[部署]Spark-3 Spark部署"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&title=[部署]Spark-3 Spark部署"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&title=[部署]Spark-3 Spark部署"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&name=[部署]Spark-3 Spark部署&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&t=[部署]Spark-3 Spark部署"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    fengwm
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
