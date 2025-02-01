@@ -13,21 +13,21 @@
 <meta property="og:site_name" content="迎风起降的小站">
 <meta property="og:description" content="如果不熟悉Linux命令行就不要看了 1.互联互通在哥们(hhh)的帮助下，搞到四台阿里云服务器，不过挺寒碜的配置：    编号 IP 用户名 密码 系统配置 备注    1 8.219.xx0.46 root —- Ubuntu 22.04 | 2vCPU&#x2F;4GiB 主节点   2 4x.236.2x.161 root —- Ubuntu 22.04 | 2vCPU&#x2F;1GiB">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202404282346549.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202404292322849.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202405021028165.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202405021027955.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202404292330151.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202404292335551.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202405021144615.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202404301104527.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengwm64/imgs/imgs/202404282346549.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengwm64/imgs/imgs/202404292322849.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengwm64/imgs/imgs/202405021028165.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengwm64/imgs/imgs/202405021027955.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengwm64/imgs/imgs/202404292330151.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengwm64/imgs/imgs/202404292335551.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengwm64/imgs/imgs/202405021144615.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengwm64/imgs/imgs/202404301104527.png">
 <meta property="article:published_time" content="2024-04-28T11:48:24.000Z">
-<meta property="article:modified_time" content="2025-02-01T12:55:40.621Z">
+<meta property="article:modified_time" content="2025-02-01T13:45:29.548Z">
 <meta property="article:author" content="fengwm">
 <meta property="article:tag" content="JDK">
 <meta property="article:tag" content="SSH">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202404282346549.png">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/fengwm64/imgs/imgs/202404282346549.png">
     
     
       
@@ -162,7 +162,7 @@
       
         <time datetime="2024-04-28T11:48:24.000Z" class="dt-published" itemprop="datePublished">2024-04-28</time>
         
-        (Updated: <time datetime="2025-02-01T12:55:40.621Z" class="dt-updated" itemprop="dateModified">2025-02-01</time>)
+        (Updated: <time datetime="2025-02-01T13:45:29.548Z" class="dt-updated" itemprop="dateModified">2025-02-01</time>)
         
       
     </div>
@@ -238,7 +238,7 @@
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 服务器IP地址列表</span></span><br><span class="line">ip_list=(<span class="string">&quot;xxxx&quot;</span> <span class="string">&quot;xxxx&quot;</span> <span class="string">&quot;xxxx&quot;</span> <span class="string">&quot;xxxx&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置统一的密码</span></span><br><span class="line">password=<span class="string">&quot;admin&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 循环遍历IP地址列表</span></span><br><span class="line"><span class="keyword">for</span> ip <span class="keyword">in</span> <span class="string">&quot;<span class="variable">$&#123;ip_list[@]&#125;</span>&quot;</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;Connecting to <span class="variable">$ip</span>...&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 连接服务器并创建用户</span></span><br><span class="line">    sshpass -p <span class="string">&quot;<span class="variable">$ssh_password</span>&quot;</span> ssh -o StrictHostKeyChecking=no root@<span class="variable">$ip</span> &lt;&lt; <span class="string">EOF</span></span><br><span class="line"><span class="string">        # 创建用户并设置密码</span></span><br><span class="line"><span class="string">        useradd -m -s /bin/bash dase-dis</span></span><br><span class="line"><span class="string">        echo &quot;dase-dis:$password&quot; | chpasswd</span></span><br><span class="line"><span class="string">        # 添加用户到sudo组</span></span><br><span class="line"><span class="string">        usermod -aG sudo dase-dis</span></span><br><span class="line"><span class="string">EOF</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;User dase-dis created on <span class="variable">$ip</span> with password <span class="variable">$password</span>&quot;</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
 
 <p>执行结果：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202404282346549.png"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/fengwm64/imgs/imgs/202404282346549.png"></p>
 <hr>
 <h2 id="1-2-服务器之间免密登录"><a href="#1-2-服务器之间免密登录" class="headerlink" title="1.2 服务器之间免密登录"></a>1.2 服务器之间免密登录</h2><p>实现四台服务器之间ssh免密登录</p>
 <h3 id="1-2-1-安装openssh"><a href="#1-2-1-安装openssh" class="headerlink" title="1.2.1 安装openssh"></a>1.2.1 安装openssh</h3><p>在四台服务器上执行</p>
@@ -261,7 +261,7 @@
 </li>
 </ul>
 <p>四台服务器都执行完毕后，断开ssh重新连接，观察到主机名字已经成功更改</p>
-<p><img src="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202404292322849.png"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/fengwm64/imgs/imgs/202404292322849.png"></p>
 <h3 id="1-2-3-更改hosts"><a href="#1-2-3-更改hosts" class="headerlink" title="1.2.3 更改hosts"></a>1.2.3 更改hosts</h3><p>原理：</p>
 <blockquote>
 <p><code>Hosts</code> 文件是本地计算机上的文本文件，用于将主机名与 <code>IP</code> 地址关联起来,绕过 <code>DNS</code> 解析。<code>Linux hosts</code> 文件的格式通常是：</p>
@@ -281,9 +281,9 @@
 <p><strong>!!!!!!!注意!!!!!!!!!</strong><br><strong>!!!!!!!注意!!!!!!!!!</strong><br><strong>!!!!!!!注意!!!!!!!!!</strong></p>
 <p><strong>在云服务器配置时, 本机使用内网IP, 其余为公网IP</strong></p>
 <p>查看内网IP:</p>
-<p><img src="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202405021028165.png"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/fengwm64/imgs/imgs/202405021028165.png"></p>
 <p>hosts数值示例:</p>
-<p><img src="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202405021027955.png"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/fengwm64/imgs/imgs/202405021027955.png"></p>
 <h3 id="1-2-4-拷贝ssh公钥"><a href="#1-2-4-拷贝ssh公钥" class="headerlink" title="1.2.4 拷贝ssh公钥"></a>1.2.4 拷贝ssh公钥</h3><p><strong>在所有机器依次执行下面命令：</strong></p>
 <p>作用是将除主机外的三台机的ssh公钥拷贝到主中，实现其余三台机器到主机的ssh免密登录</p>
 <ul>
@@ -294,7 +294,7 @@
 <li><p><code>sudo service ssh restart &amp;&amp; chmod 700 ~/.ssh  &amp;&amp; chmod 600 ~/.ssh/authorized_keys</code> 重启本机ssh服务+解决ssh文件夹的权限问题</p>
 </li>
 </ul>
-<p><img src="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202404292330151.png"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/fengwm64/imgs/imgs/202404292330151.png"></p>
 <hr>
 <p><strong>主机执行：</strong></p>
 <p>作用是将主机的ssh认证拷贝到其余三台机中，实现其余三台机器之间的ssh免密登录</p>
@@ -310,7 +310,7 @@
 <p>然后主机执行：</p>
 <p><code>sudo service ssh restart &amp;&amp; chmod 700 ~/.ssh  &amp;&amp; chmod 600 ~/.ssh/authorized_keys</code></p>
 <p>运行结果：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202404292335551.png"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/fengwm64/imgs/imgs/202404292335551.png"></p>
 <hr>
 <p><strong>验证：</strong></p>
 <p>互相ssh过去看看要不要输入密码</p>
@@ -325,7 +325,7 @@
 </ul>
 <p>如果你是云服务器:</p>
 <p><strong>请确保你知道自己在干什么, 关闭防火墙(开放所有端口)可能导致服务器被入侵</strong></p>
-<p><img src="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202405021144615.png"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/fengwm64/imgs/imgs/202405021144615.png"></p>
 <h1 id="2-配置Java环境"><a href="#2-配置Java环境" class="headerlink" title="2.配置Java环境"></a>2.配置Java环境</h1><ul>
 <li>JDK 1.8 <a target="_blank" rel="noopener" href="https://www.oracle.com/cn/java/technologies/javase/javase8-archive-downloads.html">https://www.oracle.com/cn/java/technologies/javase/javase8-archive-downloads.html</a></li>
 </ul>
@@ -349,7 +349,7 @@
 <li><p>验证：<code>java -version</code></p>
 </li>
 </ul>
-<p><img src="https://cdn.jsdelivr.net/gh/oixel64/imgs/imgs/202404301104527.png"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/fengwm64/imgs/imgs/202404301104527.png"></p>
 
   </div>
 </article>
