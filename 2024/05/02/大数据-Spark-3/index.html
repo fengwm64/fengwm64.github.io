@@ -9,7 +9,7 @@
     <meta name="description" content="1.修改配置文件1.1 修改.bashrc文件客户端执行：  vi ~&#x2F;.bashrc  按i进入编辑模式，按方向键到文件最后一行，输入export TERM&#x3D;xterm-color     按Esc键退出编辑模式，输入:wq保存退出  使.bashrc配置生效：source ~&#x2F;.bashrc   1.2 下载 spark在主节点执行:  启动HDFS服务(已经启动直接下一步):~&#x2F;hadoop">
 <meta property="og:type" content="article">
 <meta property="og:title" content="[部署]Spark-3 Spark部署">
-<meta property="og:url" content="http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/index.html">
+<meta property="og:url" content="https://blog.fnas64.us.kg/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/index.html">
 <meta property="og:site_name" content="迎风起降的小站">
 <meta property="og:description" content="1.修改配置文件1.1 修改.bashrc文件客户端执行：  vi ~&#x2F;.bashrc  按i进入编辑模式，按方向键到文件最后一行，输入export TERM&#x3D;xterm-color     按Esc键退出编辑模式，输入:wq保存退出  使.bashrc配置生效：source ~&#x2F;.bashrc   1.2 下载 spark在主节点执行:  启动HDFS服务(已经启动直接下一步):~&#x2F;hadoop">
 <meta property="og:locale" content="zh_CN">
@@ -99,8 +99,6 @@
      --><!--
        --><li><a href="/archives/">归档</a></li><!--
      --><!--
-       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
-     --><!--
        --><li><a href="/search/">搜索</a></li><!--
      -->
       </ul>
@@ -125,17 +123,17 @@
     <br/>
     <div id="share" style="display: none">
       <ul>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&text=[部署]Spark-3 Spark部署"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&title=[部署]Spark-3 Spark部署"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&is_video=false&description=[部署]Spark-3 Spark部署"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=[部署]Spark-3 Spark部署&body=Check out this article: http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&title=[部署]Spark-3 Spark部署"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&title=[部署]Spark-3 Spark部署"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&title=[部署]Spark-3 Spark部署"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&title=[部署]Spark-3 Spark部署"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&name=[部署]Spark-3 Spark部署&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&t=[部署]Spark-3 Spark部署"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.fnas64.us.kg/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.fnas64.us.kg/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&text=[部署]Spark-3 Spark部署"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.fnas64.us.kg/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&title=[部署]Spark-3 Spark部署"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.fnas64.us.kg/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&is_video=false&description=[部署]Spark-3 Spark部署"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=[部署]Spark-3 Spark部署&body=Check out this article: https://blog.fnas64.us.kg/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.fnas64.us.kg/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&title=[部署]Spark-3 Spark部署"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.fnas64.us.kg/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&title=[部署]Spark-3 Spark部署"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.fnas64.us.kg/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&title=[部署]Spark-3 Spark部署"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.fnas64.us.kg/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&title=[部署]Spark-3 Spark部署"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.fnas64.us.kg/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&name=[部署]Spark-3 Spark部署&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.fnas64.us.kg/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&t=[部署]Spark-3 Spark部署"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
@@ -347,8 +345,6 @@
         
           <li><a href="/archives/">归档</a></li>
         
-          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li>
-        
           <li><a href="/search/">搜索</a></li>
         
       </ul>
@@ -363,17 +359,17 @@
 
     <div id="share-footer" style="display: none">
       <ul>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&text=[部署]Spark-3 Spark部署"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&title=[部署]Spark-3 Spark部署"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&is_video=false&description=[部署]Spark-3 Spark部署"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=[部署]Spark-3 Spark部署&body=Check out this article: http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&title=[部署]Spark-3 Spark部署"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&title=[部署]Spark-3 Spark部署"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&title=[部署]Spark-3 Spark部署"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&title=[部署]Spark-3 Spark部署"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&name=[部署]Spark-3 Spark部署&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&t=[部署]Spark-3 Spark部署"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.fnas64.us.kg/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.fnas64.us.kg/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&text=[部署]Spark-3 Spark部署"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.fnas64.us.kg/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&title=[部署]Spark-3 Spark部署"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.fnas64.us.kg/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&is_video=false&description=[部署]Spark-3 Spark部署"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=[部署]Spark-3 Spark部署&body=Check out this article: https://blog.fnas64.us.kg/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.fnas64.us.kg/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&title=[部署]Spark-3 Spark部署"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.fnas64.us.kg/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&title=[部署]Spark-3 Spark部署"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.fnas64.us.kg/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&title=[部署]Spark-3 Spark部署"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.fnas64.us.kg/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&title=[部署]Spark-3 Spark部署"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.fnas64.us.kg/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&name=[部署]Spark-3 Spark部署&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.fnas64.us.kg/2024/05/02/%E5%A4%A7%E6%95%B0%E6%8D%AE-Spark-3/&t=[部署]Spark-3 Spark部署"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
@@ -408,8 +404,6 @@
        --><li><a href="/about/">关于</a></li><!--
      --><!--
        --><li><a href="/archives/">归档</a></li><!--
-     --><!--
-       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
      --><!--
        --><li><a href="/search/">搜索</a></li><!--
      -->
