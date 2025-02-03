@@ -14,7 +14,7 @@
 <meta property="og:description" content="1. 介绍逻辑回归是一种广义上的线性回归模型，简单来看就是将线性回归的结果 $y$ 通过一个映射函数 sigmoid 映射到 0-1 区间，将 sigmoid 函数输出当做概率值，当概率值大于 0.5 时分类为正类，反之反类。 Sigmoid函数: $$g(z) &#x3D; \frac{1}{1+e^{-z}}$$   2. 模型公式2.1 模型推理公式$$h_{\theta}(x) &amp;#x3D">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-12-23T06:46:38.000Z">
-<meta property="article:modified_time" content="2025-02-03T08:34:07.289Z">
+<meta property="article:modified_time" content="2025-02-03T09:19:06.984Z">
 <meta property="article:author" content="fengwm">
 <meta property="article:tag" content="机器学习">
 <meta property="article:tag" content="逻辑回归">
@@ -195,16 +195,24 @@
 <p>$$<br>P_{\theta}(y&#x3D;1|x) &#x3D; h_{\theta}(x)<br>$$</p>
 <p>同样，预测类别为 $0$ 的概率是：</p>
 <p>$$<br>P_{\theta}(y&#x3D;0|x) &#x3D; 1 - h_{\theta}(x)<br>$$</p>
-<h4 id="最大似然函数"><a href="#最大似然函数" class="headerlink" title="最大似然函数"></a>最大似然函数</h4><p>接着按照最大似然的方法写出 <strong>似然函数</strong>：</p>
+<hr>
+<p>令 $p &#x3D; h_{\theta}(x)$，上面的公式可以写为：</p>
+<p>给定输入样本 $x$，预测类别为 $1$ 的概率：</p>
+<p>$$<br>P_{\theta}(y&#x3D;1|x) &#x3D; p<br>$$</p>
+<p>同样，预测类别为 $0$ 的概率是：</p>
+<p>$$<br>P_{\theta}(y&#x3D;0|x) &#x3D; 1 - p<br>$$</p>
+<h4 id="最大似然函数"><a href="#最大似然函数" class="headerlink" title="最大似然函数"></a>最大似然函数</h4><p>这里实际上将sigmoid输出当做概率，我们目标追求 正确分类的概率 $P_{\theta}(y|x)$ 要越高越好 (注意这里的 $y$ 是真实类别，所以 $P_{\theta}(y|x)$ 就是正确分类的概率值)。</p>
+<p>使用最大似然估计来求使 $P_{\theta}(y|x)$ 达到最大的参数 $\theta$，故可以得到参数 $\theta$ 的似然函数如下：</p>
 <p>$$<br>L(\theta) &#x3D; P_{\theta}(y|x) &#x3D; \prod_{j&#x3D;1}^{N} P_{\theta}(y^j | x^j)<br>$$</p>
-<p>可以巧妙地转化为下面这种形式：</p>
-<p>$$<br>L(\theta) &#x3D; \prod_{j&#x3D;1}^{N} p^{y^j} (1-p)^{1-y^j}<br>$$</p>
 <p>©️ 符号说明：</p>
-<p>- </p>
-<p>⚠️ 注意：</p>
-<p>$p^{y} (1-p)^{1-y}$ 表示了 $P_{\theta}(y|x) $。</p>
-<p>当 $y$ 为 $1$ ，$p^y$ 生效；$y&#x3D;0$，$p^y$ 失效，$(1-p)^{1-y}$ 生效。</p>
-<p>这也解释了为什么要定义正类编码为1，负类编码为0（其实定义为其他数字也是可以的，不过后续推导会很繁琐），这样做可以简洁表示，简化了后面的推导过程。</p>
+<ul>
+<li>$x$ </li>
+<li>${y^j}$ 第 $j$ 个样本的真实类别</li>
+<li>$N$ 为样本数量</li>
+</ul>
+<p>这里的 $P_{\theta}(y|x) $ 可以用 $p^{y} (1-p)^{1-y}$ 替代，因为当 $y$ 为 $1$ ，$p^y$ 生效；$y&#x3D;0$，$p^y$ 失效，$(1-p)^{1-y}$ 生效。</p>
+<p>这也解释了为什么要定义正类编码为 $1$，负类编码为 $0$（其实定义为其他数字也是可以的，不过后续推导会很繁琐），这样做可以简洁表示，简化了后面的推导过程。</p>
+<p>然后就可以得到下面这种形式：<br>$$<br>L(\theta) &#x3D; \prod_{j&#x3D;1}^{N} p^{y^j} (1-p)^{1-y^j}<br>$$</p>
 <ol start="5">
 <li><strong>对数似然函数</strong>:</li>
 </ol>
