@@ -14,7 +14,7 @@
 <meta property="og:description" content="0. 项目背景大二时候立项的校级大学生创新项目，当时受到 Meta 吹嘘的元宇宙影响想到了这么一个项目，总结下来就是给基于 AR 技术给学校的党史长廊做一个导游的 APP 。 1. 项目结构基于 Unity 平台，使用 AR Foundation 框架进行开发。项目分为 3 个模块，采用一个模块对应一个场景的方法进行开发。模块分别为 导览页、AR扫描页、AR导航页，对应项目中的 Assets&#x2F;Sc">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-03-23T01:57:11.000Z">
-<meta property="article:modified_time" content="2025-03-23T03:12:05.457Z">
+<meta property="article:modified_time" content="2025-03-23T03:14:05.712Z">
 <meta property="article:author" content="fengwm">
 <meta property="article:tag" content="AR">
 <meta property="article:tag" content="Unity">
@@ -186,7 +186,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">程序UI界面  </span><br><span class="line">└── xxx 页</span><br><span class="line">    ├── xxx</span><br><span class="line">    └── ...</span><br><span class="line">└── 底部TAB栏</span><br><span class="line">    ├── 首页按钮</span><br><span class="line">    │   ├── Text (TMP)</span><br><span class="line">    │   └── MainImage</span><br><span class="line">    ├── AR扫描按钮</span><br><span class="line">    │   ├── Text (TMP)</span><br><span class="line">    │   └── MainImage</span><br><span class="line">    └── AR导航按钮</span><br><span class="line">        ├── MainImage</span><br><span class="line">        └── Text (TMP)</span><br></pre></td></tr></table></figure>
 
 <p>首先，在 <code>底部TAB栏</code> 挂载一个脚本 <code>Assets/Scripts/UI/TabController.cs</code>，脚本会检测用户点击了第几个按钮，然后加载对应的场景内容，完成场景切换。</p>
-<p>其次，需要有一个实体记录当前位于的场景，以便记录当前位于的场景，在TAB栏高亮对应的按钮。建立脚本 <code>Assets/Scripts/UI/TabManager.cs</code>，然后建立一个空的游戏对象挂载此脚本，保存为预制体 <code>Assets/Prefabs/TabManager.prefab</code>，在 <code>底部TAB栏</code> 的 <code>TabController</code> 中引用预制体。</p>
+<p>其次，需要有一个实体记录当前位于的场景，在TAB栏高亮对应的按钮。建立脚本 <code>Assets/Scripts/UI/TabManager.cs</code>，然后建立一个空的游戏对象挂载此脚本，保存为预制体 <code>Assets/Prefabs/TabManager.prefab</code>，在 <code>底部TAB栏</code> 的 <code>TabController</code> 中引用预制体。</p>
 <h3 id="2-2-TAB宽度自适应"><a href="#2-2-TAB宽度自适应" class="headerlink" title="2.2 TAB宽度自适应"></a>2.2 TAB宽度自适应</h3><p>现在的手机都是全面屏设计，分辨率也是五花八门的，为了可以使得 TAB 栏位于屏幕最下方并且不会遮挡全面屏控制的“小白条”，编写一个脚本 <code>Assets/Scripts/UI/TabBarWidthAdjuster.cs</code> 自动布局 TAB 栏到安全区域内，同样挂载到 <code>底部TAB栏</code> 对象上。</p>
 
   </div>
