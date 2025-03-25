@@ -6,14 +6,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-    <meta name="description" content="0. 项目背景大二时候立项的校级大学生创新项目，当时受到 Meta 吹嘘的元宇宙影响想到了这么一个项目，总结下来就是给基于 AR 技术给学校的党史长廊做一个导游的 APP 。 项目地址：https:&#x2F;&#x2F;github.com&#x2F;fengwm64&#x2F;ARGallerySmartGuide （暂未开源，2025.9后开源） 1. 项目结构基于 Unity 平台，使用 AR Foundation 框架进行开发">
+    <meta name="description" content="0. 项目背景大二时候立项的校级大学生创新项目，当时受到 Meta 吹嘘的元宇宙影响想到了这么一个项目，总结下来就是给基于 AR 技术给学校的党史长廊做一个导游的 APP 。 项目地址：https:&#x2F;&#x2F;github.com&#x2F;fengwm64&#x2F;ARGallerySmartGuide （暂未开源，2025.09后开源）  1. 项目结构基于 Unity 平台，使用 AR Foundation 框架进行">
 <meta property="og:type" content="article">
 <meta property="og:title" content="[项目记录]党史长廊智慧导游">
 <meta property="og:url" content="https://blog.fnas64.xin/2025/03/23/%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95-%E5%85%9A%E5%8F%B2%E9%95%BF%E5%BB%8A%E6%99%BA%E6%85%A7%E5%AF%BC%E6%B8%B8/index.html">
 <meta property="og:site_name" content="迎风起降的小站">
-<meta property="og:description" content="0. 项目背景大二时候立项的校级大学生创新项目，当时受到 Meta 吹嘘的元宇宙影响想到了这么一个项目，总结下来就是给基于 AR 技术给学校的党史长廊做一个导游的 APP 。 项目地址：https:&#x2F;&#x2F;github.com&#x2F;fengwm64&#x2F;ARGallerySmartGuide （暂未开源，2025.9后开源） 1. 项目结构基于 Unity 平台，使用 AR Foundation 框架进行开发">
+<meta property="og:description" content="0. 项目背景大二时候立项的校级大学生创新项目，当时受到 Meta 吹嘘的元宇宙影响想到了这么一个项目，总结下来就是给基于 AR 技术给学校的党史长廊做一个导游的 APP 。 项目地址：https:&#x2F;&#x2F;github.com&#x2F;fengwm64&#x2F;ARGallerySmartGuide （暂未开源，2025.09后开源）  1. 项目结构基于 Unity 平台，使用 AR Foundation 框架进行">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://i-blog.csdnimg.cn/blog_migrate/6206bf0065127dca1cabc77c42ee2c5c.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/%E6%BC%94%E7%A4%BA%E6%96%87%E7%A8%BF3_00.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/20250325175506.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/20250325181602.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/20250325175139.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/%E5%9B%BE%E7%89%871.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/hand_oem.webm">
 <meta property="og:image" content="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/20250324093931.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/20250324100257.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/20250324100156.png">
@@ -21,12 +26,12 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/%E4%B8%BB%E9%A2%98%E9%9B%95%E5%A1%91%E5%9C%B0%E7%90%83%E4%B8%8A%E7%9A%84%E7%BA%A2%E9%A3%98%E5%B8%A6.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/%E7%BA%A2%E8%89%B2%E6%96%87%E5%8C%96%E6%BC%94%E8%89%BA%E5%B9%BF%E5%9C%BA.png">
 <meta property="article:published_time" content="2025-03-23T01:57:11.000Z">
-<meta property="article:modified_time" content="2025-03-24T02:40:11.082Z">
+<meta property="article:modified_time" content="2025-03-25T10:30:27.356Z">
 <meta property="article:author" content="fengwm">
 <meta property="article:tag" content="AR">
 <meta property="article:tag" content="Unity">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://i-blog.csdnimg.cn/blog_migrate/6206bf0065127dca1cabc77c42ee2c5c.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/%E6%BC%94%E7%A4%BA%E6%96%87%E7%A8%BF3_00.png">
     
     
       
@@ -184,13 +189,15 @@
   <div class="content e-content" itemprop="articleBody">
     <h2 id="0-项目背景"><a href="#0-项目背景" class="headerlink" title="0. 项目背景"></a>0. 项目背景</h2><p>大二时候立项的校级大学生创新项目，当时受到 Meta 吹嘘的元宇宙影响想到了这么一个项目，总结下来就是给基于 AR 技术给学校的党史长廊做一个导游的 APP 。</p>
 <p>项目地址：<a target="_blank" rel="noopener" href="https://github.com/fengwm64/ARGallerySmartGuide">https://github.com/fengwm64/ARGallerySmartGuide</a></p>
-<p>（暂未开源，2025.9后开源）</p>
+<p>（暂未开源，2025.09后开源）</p>
+<p><img src="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/%E6%BC%94%E7%A4%BA%E6%96%87%E7%A8%BF3_00.png" alt="APP"></p>
 <h2 id="1-项目结构"><a href="#1-项目结构" class="headerlink" title="1. 项目结构"></a>1. 项目结构</h2><p>基于 Unity 平台，使用 AR Foundation 框架进行开发。项目分为 3 个模块，采用一个模块对应一个场景的方法进行开发。模块分别为 导览页、AR扫描页、AR导航页，对应项目中的 <code>Assets/Scenes/</code> 下的:</p>
 <ul>
 <li><code>Assets/Scenes/Home.unity</code>    导览页</li>
 <li><code>Assets/Scenes/ARScan.unity</code>  AR扫描页</li>
 <li><code>Assets/Scenes/ARNav.unity</code>   AR导航页</li>
 </ul>
+<p><img src="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/20250325175506.png" alt="20250325175506"></p>
 <h2 id="2-UI设计"><a href="#2-UI设计" class="headerlink" title="2. UI设计"></a>2. UI设计</h2><h3 id="2-1-场景切换"><a href="#2-1-场景切换" class="headerlink" title="2.1 场景切换"></a>2.1 场景切换</h3><p>项目有三个场景，通过UI中的TAB栏进行切换。</p>
 <p>所谓TAB栏其实就是一个有三个按钮组成的容器。结构如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">程序UI界面  </span><br><span class="line">└── xxx 页</span><br><span class="line">    ├── xxx</span><br><span class="line">    └── ...</span><br><span class="line">└── 底部TAB栏</span><br><span class="line">    ├── 首页按钮</span><br><span class="line">    │   ├── Text (TMP)</span><br><span class="line">    │   └── MainImage</span><br><span class="line">    ├── AR扫描按钮</span><br><span class="line">    │   ├── Text (TMP)</span><br><span class="line">    │   └── MainImage</span><br><span class="line">    └── AR导航按钮</span><br><span class="line">        ├── MainImage</span><br><span class="line">        └── Text (TMP)</span><br></pre></td></tr></table></figure>
@@ -198,6 +205,7 @@
 <p>首先，在 <code>底部TAB栏</code> 挂载一个脚本 <code>Assets/Scripts/UI/TabController.cs</code>，脚本会检测用户点击了第几个按钮，然后加载对应的场景内容，完成场景切换。</p>
 <p>其次，需要有一个实体记录当前位于的场景，在TAB栏高亮对应的按钮。建立脚本 <code>Assets/Scripts/UI/TabManager.cs</code>，然后建立一个空的游戏对象挂载此脚本，保存为预制体 <code>Assets/Prefabs/TabManager.prefab</code>，在 <code>底部TAB栏</code> 的 <code>TabController</code> 中引用预制体。</p>
 <h3 id="2-2-TAB栏自适应"><a href="#2-2-TAB栏自适应" class="headerlink" title="2.2 TAB栏自适应"></a>2.2 TAB栏自适应</h3><p>现在的手机都是全面屏设计，分辨率也是五花八门的，为了可以使得 TAB 栏与<strong>屏幕等宽</strong>并且位于屏幕最下方且<strong>不会遮挡全面屏控制的“小白条”</strong>，编写一个脚本 <code>Assets/Scripts/UI/TabBarWidthAdjuster.cs</code> 自动布局 TAB 栏到安全区域内，同样挂载到 <code>底部TAB栏</code> 对象上。</p>
+<p><img src="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/20250325181602.png" alt="TAB栏自适应"></p>
 <h2 id="3-导览页设计"><a href="#3-导览页设计" class="headerlink" title="3. 导览页设计"></a>3. 导览页设计</h2><h3 id="3-1-场景结构"><a href="#3-1-场景结构" class="headerlink" title="3.1 场景结构"></a>3.1 场景结构</h3><p>导览页场景主要由 搜索栏、滚动区域两部分组成。其中滚动区域是一个<strong>无限滚动列表</strong>，用于展示各个景点。详细结构如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">Home  </span><br><span class="line">├── Camera  </span><br><span class="line">├── Directional Light  </span><br><span class="line">├── EventSystem  </span><br><span class="line">└── 程序UI界面  </span><br><span class="line">    ├── 首页  </span><br><span class="line">    │   ├── 列表面板  </span><br><span class="line">    │   │   ├── 搜索栏  </span><br><span class="line">    │   │   │   ├── 搜索内容输入框  </span><br><span class="line">    │   │   │   │   ├── Text Area  </span><br><span class="line">    │   │   │   │   │   ├── Placeholder  </span><br><span class="line">    │   │   │   │   │   └── Text  </span><br><span class="line">    │   │   │   └── 搜索按钮  </span><br><span class="line">    │   │   │       └── Image  </span><br><span class="line">    │   │   ├── 滚动视图  </span><br><span class="line">    │   │   │   ├── Viewport  </span><br><span class="line">    │   │   │   │   ├── Content  </span><br><span class="line">    │   │   │   │   │   ├── ChildItem  </span><br><span class="line">    │   │   │   │   │   │   ├── Image  </span><br><span class="line">    │   │   │   │   │   │   ├── TitleText  </span><br><span class="line">    │   │   │   │   │   │   └── RowText  </span><br><span class="line">    │   │   │   ├── Scrollbar Vertical  </span><br><span class="line">    │   │   │   │   ├── Sliding Area  </span><br><span class="line">    │   │   │   │   │   └── Handle  </span><br><span class="line">    │   ├── 详细页面板（默认隐藏）</span><br><span class="line">    │   │   ├── 返回按钮  </span><br><span class="line">    │   │   ├── 标题  </span><br><span class="line">    │   │   ├── 详细介绍  </span><br><span class="line">    │   │   ├── 场景图片  </span><br><span class="line">    │   │   └── 评论区  </span><br><span class="line">    │   │       └── Text (TMP)  </span><br><span class="line">    ├── 底部TAB栏  </span><br><span class="line">    │   ├── 首页按钮  </span><br><span class="line">    │   │   ├── Text (TMP)  </span><br><span class="line">    │   │   └── MainImage  </span><br><span class="line">    │   ├── AR扫描按钮  </span><br><span class="line">    │   └── AR导航按钮  </span><br></pre></td></tr></table></figure>
 
@@ -317,11 +325,14 @@
 </tr>
 </tbody></table>
 <p>数据库文件放置在 <code>Assets/StreamingAssets/ScenesData.db</code> 中，因为移动端Android和iOS都不允许直接访问 <code>StreamingAssets</code> 文件夹中的文件，故在 <code>首页</code> 组件挂载脚本 <code>Assets/Scripts/Database/DbInit.cs</code>，该脚本功能是将启动时候将 <code>StreamingAssets</code> 下的数据库文件拷贝到APP下的持久化访问路径。</p>
+<p>数据库相关的动态链接文件为 <code>libsqlite3.so</code> 和 <code>Mono.Data.Sqlite.dll</code>，具体放置方法如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">Assets/Plugins</span><br><span class="line">├── Android</span><br><span class="line">│   ├── libs</span><br><span class="line">│   │   ├── arm64-v8a</span><br><span class="line">│   │   │   └── libsqlite3.so</span><br><span class="line">│   │   ├── armeabi-v7a</span><br><span class="line">│   │   │   └── libsqlite3.so</span><br><span class="line">│   │   └── x86</span><br><span class="line">│   │       └── libsqlite3.so</span><br><span class="line">├── IOS</span><br><span class="line">│   └── libsqlite3.so</span><br><span class="line">├── x86</span><br><span class="line">│   └── sqlite3.dll</span><br><span class="line">│── x86_64</span><br><span class="line">│   └── sqlite3.dll</span><br><span class="line">└── SQLite</span><br><span class="line">    ├── Mono.Data.Sqlite.dll</span><br><span class="line">    ├── System.Data.dll</span><br><span class="line">    └── sqlite3.dll</span><br></pre></td></tr></table></figure>
+
 <p>数据库增删改查的所有操作封装在脚本 <code>Assets/Scripts/Database/DbAccess.cs</code> 中。</p>
 <h3 id="3-3-无限滚动列表设计"><a href="#3-3-无限滚动列表设计" class="headerlink" title="3.3 无限滚动列表设计"></a>3.3 无限滚动列表设计</h3><blockquote>
 <p>无限滚动列表的原理其实就是，列表向上滑动时，当<code>item</code>超过显示区域的上边界时，把<code>item</code>移动到列表底部，重复使用<code>item</code>并更新<code>item</code>的ui显示，向下滑动同理，把超过显示区域底部的<code>item</code>复用到顶部。</p>
 </blockquote>
-<p><img src="https://i-blog.csdnimg.cn/blog_migrate/6206bf0065127dca1cabc77c42ee2c5c.png" alt="无限滚动列表原理"></p>
+<p><img src="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/20250325175139.png" alt="无限滚动列表原理"></p>
 <p>这部分我是参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/linxinfa/article/details/115396546">【游戏开发实战】Unity UGUI实现循环复用列表，显示巨量列表信息，含Demo工程源码</a>，在此感谢<a target="_blank" rel="noopener" href="https://linxinfa.blog.csdn.net/">@林新发</a>。</p>
 <p>项目中，涉及无限循环列表的组件和脚本如下：</p>
 <ul>
@@ -333,9 +344,11 @@
 <p>在搜索按钮上挂载脚本 <code>Assets/Scripts/List/SearchList.cs</code>。</p>
 <p>在 <code>SearchList.cs</code> 脚本中，字符串相似度计算使用的是 Levenshtein 距离算法。该算法通过计算两个字符串之间的编辑距离来确定它们的相似度。编辑距离是指将一个字符串转换为另一个字符串所需的最少编辑操作次数（插入、删除或替换一个字符）。</p>
 <p>当搜索到结果后会自动滚动到与搜索关键词最相似的行进行黄色效果的高亮。</p>
+<p><img src="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/%E5%9B%BE%E7%89%871.png" alt="黄色高亮效果"></p>
 <h2 id="4-AR扫描页设计"><a href="#4-AR扫描页设计" class="headerlink" title="4. AR扫描页设计"></a>4. AR扫描页设计</h2><h3 id="4-1-场景结构"><a href="#4-1-场景结构" class="headerlink" title="4.1 场景结构"></a>4.1 场景结构</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">ARScan</span><br><span class="line">├── AR Session</span><br><span class="line">├── XR Origin</span><br><span class="line">│   ├── EventSystem</span><br><span class="line">│   └── Directional Light</span><br><span class="line">├── 程序UI界面</span><br><span class="line">│   ├── AR扫描页</span><br><span class="line">│   │   ├── 标题</span><br><span class="line">│   │   └── 引导动画</span><br><span class="line">│   │       ├── RawImage</span><br><span class="line">│   │       ├── 引导动画播放控制器</span><br><span class="line">│   │       └── Text (TMP)</span><br><span class="line">│   └── 底部TAB栏</span><br><span class="line">│       ├── 主页按钮</span><br><span class="line">│       ├── AR扫描按钮</span><br><span class="line">│       └── AR导航按钮</span><br></pre></td></tr></table></figure>
 
 <h3 id="4-2-引导动画"><a href="#4-2-引导动画" class="headerlink" title="4.2 引导动画"></a>4.2 引导动画</h3><p>参考网络上的类似 APP 都有做引导的动画，我也做了一个。<strong>没有触发</strong> AR 扫描效果时候显示引导动画，这里所谓动画其实一段视频，从谷歌 ARCore 的 Demo 里偷的。这部分的代码在 <code>Assets/Scripts/Animation/PlayVideoOnStart.cs</code> 中实现，其实就是做了个视频播放器，循环播放 <code>Assets/Resources/video/hand_oem.webm</code> 的引导的视频。</p>
+<p><img src="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/hand_oem.webm" alt="引导动画"></p>
 <h3 id="4-3-AR扫描效果管理器"><a href="#4-3-AR扫描效果管理器" class="headerlink" title="4.3 AR扫描效果管理器"></a>4.3 AR扫描效果管理器</h3><p>一般来说直接都是直接将图片到<code>ReferenceImageLibrary</code>，然后直接在<code>XR Origin</code>的<code>ARTrackedImageManager</code>脚本上挂载AR效果的预制体，但是这样做只能挂载一个预制体，存在难以管理不同AR效果预制体的问题。为了更好地管理不同的AR效果预制体，我们可以通过脚本动态管理AR效果的生成和销毁。</p>
 <p>创建脚本<code>Assets/Scripts/ARScan/ImageTracker.cs</code>统一管理AR扫描效果目标，挂载到<code>XR Origin上</code>，支持3种目标，分别为AR 3D模型、AR视频、AR文字介绍。</p>
 <h3 id="4-4-AR扫描效果制作"><a href="#4-4-AR扫描效果制作" class="headerlink" title="4.4 AR扫描效果制作"></a>4.4 AR扫描效果制作</h3><h4 id="4-4-1-收集识别图进行预处理"><a href="#4-4-1-收集识别图进行预处理" class="headerlink" title="4.4.1 收集识别图进行预处理"></a>4.4.1 收集识别图进行预处理</h4><ul>
