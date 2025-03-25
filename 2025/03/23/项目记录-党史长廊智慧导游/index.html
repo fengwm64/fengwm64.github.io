@@ -18,7 +18,6 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/20250325181602.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/20250325175139.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/%E5%9B%BE%E7%89%871.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/%E5%BC%95%E5%AF%BC%E5%8A%A8%E7%94%BB.jpeg">
 <meta property="og:image" content="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/AR%E6%95%88%E6%9E%9C.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/20250324093931.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/20250324100257.png">
@@ -27,7 +26,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/%E4%B8%BB%E9%A2%98%E9%9B%95%E5%A1%91%E5%9C%B0%E7%90%83%E4%B8%8A%E7%9A%84%E7%BA%A2%E9%A3%98%E5%B8%A6.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/%E7%BA%A2%E8%89%B2%E6%96%87%E5%8C%96%E6%BC%94%E8%89%BA%E5%B9%BF%E5%9C%BA.png">
 <meta property="article:published_time" content="2025-03-23T01:57:11.000Z">
-<meta property="article:modified_time" content="2025-03-25T10:55:11.208Z">
+<meta property="article:modified_time" content="2025-03-25T10:57:24.973Z">
 <meta property="article:author" content="fengwm">
 <meta property="article:tag" content="AR">
 <meta property="article:tag" content="Unity">
@@ -350,8 +349,6 @@
 <h2 id="4-AR扫描页设计"><a href="#4-AR扫描页设计" class="headerlink" title="4. AR扫描页设计"></a>4. AR扫描页设计</h2><h3 id="4-1-场景结构"><a href="#4-1-场景结构" class="headerlink" title="4.1 场景结构"></a>4.1 场景结构</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">ARScan</span><br><span class="line">├── AR Session</span><br><span class="line">├── XR Origin</span><br><span class="line">│   ├── EventSystem</span><br><span class="line">│   └── Directional Light</span><br><span class="line">├── 程序UI界面</span><br><span class="line">│   ├── AR扫描页</span><br><span class="line">│   │   ├── 标题</span><br><span class="line">│   │   └── 引导动画</span><br><span class="line">│   │       ├── RawImage</span><br><span class="line">│   │       ├── 引导动画播放控制器</span><br><span class="line">│   │       └── Text (TMP)</span><br><span class="line">│   └── 底部TAB栏</span><br><span class="line">│       ├── 主页按钮</span><br><span class="line">│       ├── AR扫描按钮</span><br><span class="line">│       └── AR导航按钮</span><br></pre></td></tr></table></figure>
 
 <h3 id="4-2-引导动画"><a href="#4-2-引导动画" class="headerlink" title="4.2 引导动画"></a>4.2 引导动画</h3><p>参考网络上的类似 APP 都有做引导的动画，我也做了一个。<strong>没有触发</strong> AR 扫描效果时候显示引导动画，这里所谓动画其实一段视频，从谷歌 ARCore 的 Demo 里偷的。这部分的代码在 <code>Assets/Scripts/Animation/PlayVideoOnStart.cs</code> 中实现，其实就是做了个视频播放器，循环播放 <code>Assets/Resources/video/hand_oem.webm</code> 的引导的视频。</p>
-<img src="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/引导动画.jpeg" alt="引导动画" height="50%">
-
 <h3 id="4-3-AR扫描效果管理器"><a href="#4-3-AR扫描效果管理器" class="headerlink" title="4.3 AR扫描效果管理器"></a>4.3 AR扫描效果管理器</h3><p>一般来说直接都是直接将图片到<code>ReferenceImageLibrary</code>，然后直接在<code>XR Origin</code>的<code>ARTrackedImageManager</code>脚本上挂载AR效果的预制体，但是这样做只能挂载一个预制体，存在难以管理不同AR效果预制体的问题。为了更好地管理不同的AR效果预制体，我们可以通过脚本动态管理AR效果的生成和销毁。</p>
 <p>创建脚本<code>Assets/Scripts/ARScan/ImageTracker.cs</code>统一管理AR扫描效果目标，挂载到<code>XR Origin上</code>，支持3种目标，分别为AR 3D模型、AR视频、AR文字介绍。</p>
 <p><img src="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/AR%E6%95%88%E6%9E%9C.png" alt="AR效果"></p>
