@@ -4,6 +4,46 @@
   
     
     <entry>
+      <title>实验室服务器跳板</title>
+      <link href="/2025/04/26/%E5%AE%9E%E9%AA%8C%E5%AE%A4%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%B7%B3%E6%9D%BF/"/>
+      <url>/2025/04/26/%E5%AE%9E%E9%AA%8C%E5%AE%A4%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%B7%B3%E6%9D%BF/</url>
+      
+        <content type="html"><![CDATA[<h2 id="情况介绍"><a href="#情况介绍" class="headerlink" title="情况介绍"></a>情况介绍</h2><p>实验室的 GPU 服务器是仅校园网内网访问的，不在校内就无法连接。</p><p>然后师兄给了我一台工位上的电脑，Linux 系统，使用向日葵远程桌面进行连接。但是网络太差了，使用起来一卡一卡的，根本干不了活，而且工位电脑开着显示器没什么隐私。</p><p><strong>而且，我们实验室管理条例是禁止在 GPU 服务器上安装任何内网穿透服务的</strong>。<em>所以，如果你们实验室没有该条例可以直接从GPU服务器反向ssh到公网VPS，只需要一层跳板即可</em>。</p><h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><ol start="0"><li><p>设置好ssh免密登陆：本地到VPS，工位到VPS，本地到GPU服务器</p></li><li><p>思路是有一台公网的VPS，然后从工位电脑反向ssh到公网服务器：</p></li></ol><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -N -R 2222:localhost:22 &lt;vps_user&gt;@&lt;vps_ip&gt;</span><br></pre></td></tr></table></figure><p>上面代码的作用是：将工位电脑的22端口（即ssh端口）映射到公网VPS的2222端口，相当于在 工位电脑-公网VPS 之间构建了一条双向通信的隧道，公网VPS的2222就是工位电脑的22端口。</p><ol start="2"><li>在本地的笔记本上，ssh连接到公网VPS地址的2222端口，看看是否能直接连接工位电脑。可以的话，直接再增加一层跳板，从工位电脑跳到实验室的GPU服务器。</li></ol><p>现在的路径为：本地笔记本 -&gt; 公网 VPS -&gt; 工位电脑 -&gt; GPU 服务器</p><p>设置本地笔记本的 <code>~/.ssh/config</code> 设置：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Host vps</span><br><span class="line">  HostName vps_ip</span><br><span class="line">  User vps_user</span><br><span class="line">  Port 22</span><br><span class="line"></span><br><span class="line">Host workPC</span><br><span class="line">  HostName localhost</span><br><span class="line">  User your_lab_user</span><br><span class="line">  Port 2222</span><br><span class="line">  ProxyJump vps</span><br><span class="line"></span><br><span class="line">Host labserver</span><br><span class="line">  HostName localhost</span><br><span class="line">  User your_lab_user</span><br><span class="line">  Port 2222</span><br><span class="line">  ProxyJump workPC</span><br></pre></td></tr></table></figure><p>最后直接 <code>ssh labserver</code>即可。</p><ol start="3"><li>最后可以在工位电脑上讲反向ssh的服务持久化，设置一个 systemd service</li></ol><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> nano /etc/systemd/system/reverse-ssh-tunnel.service</span><br></pre></td></tr></table></figure><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=Reverse SSH Tunnel to VPS</span><br><span class="line">After=network.target</span><br><span class="line">Wants=network-online.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">User=&lt;your_local_username&gt;</span><br><span class="line">Restart=always</span><br><span class="line">RestartSec=5</span><br><span class="line">Environment=<span class="string">&quot;AUTOSSH_GATETIME=0&quot;</span></span><br><span class="line">ExecStart=/usr/bin/ssh -o ServerAliveInterval=60 -o ServerAliveCountMax=3 -N -R 2222:localhost:22 &lt;vps_user&gt;@&lt;vps_ip&gt;</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure><p>替换占位信息后保存.</p><p>保存之后运行：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> systemctl daemon-reload</span><br><span class="line"><span class="built_in">sudo</span> systemctl <span class="built_in">enable</span> reverse-ssh-tunnel.service</span><br><span class="line"><span class="built_in">sudo</span> systemctl start reverse-ssh-tunnel.service</span><br></pre></td></tr></table></figure><p>查看运行状态：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> systemctl status reverse-ssh-tunnel.service</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>LLaMA Factory LoRA 微调 Qwen2.5</title>
+      <link href="/2025/04/04/LLaMA-Factory-LoRA-%E5%BE%AE%E8%B0%83-Qwen2-5/"/>
+      <url>/2025/04/04/LLaMA-Factory-LoRA-%E5%BE%AE%E8%B0%83-Qwen2-5/</url>
+      
+        <content type="html"><![CDATA[<h2 id="1-安装"><a href="#1-安装" class="headerlink" title="1. 安装"></a>1. 安装</h2><h2 id="2-参数介绍"><a href="#2-参数介绍" class="headerlink" title="2. 参数介绍"></a>2. 参数介绍</h2><p>文档链接 🔗：<a href="https://llamafactory.readthedocs.io/zh-cn/latest/advanced/arguments.html">https://llamafactory.readthedocs.io/zh-cn/latest/advanced/arguments.html</a></p><table><thead><tr><th>参数名称</th><th>类型</th><th>介绍</th><th>默认值</th></tr></thead><tbody><tr><td>pure_bf16</td><td>bool</td><td>是否以纯 bf16 精度训练模型（不使用 AMP）</td><td>False</td></tr><tr><td>stage</td><td>Literal[“pt”, “sft”, “rm”, “ppo”, “dpo”, “kto”]</td><td>训练阶段</td><td></td></tr><tr><td>use_adam_mini</td><td>bool</td><td>是否使用 <a href="https://mp.weixin.qq.com/s?__biz=MzA3MzI4MjgzMw==&mid=2650924952&idx=3&sn=fe2c07c612a070494f313a642a75d151">Adam-mini 优化器</a></td><td>False</td></tr><tr><td>compute_accuracy</td><td>bool</td><td>是否在评估时计算 token 级别的准确率</td><td>False</td></tr><tr><td>disable_shuffling</td><td>bool</td><td>是否禁用训练集的随机打乱</td><td>False</td></tr><tr><td>plot_loss</td><td>bool</td><td>是否保存训练过程中的损失曲线</td><td>False</td></tr><tr><td>include_effective_tokens_per_second</td><td>bool</td><td>是否计算有效的每秒 token 数</td><td>False</td></tr></tbody></table>]]></content>
+      
+      
+      <categories>
+          
+          <category> 项目记录 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> LLaMA-Factory </tag>
+            
+            <tag> LLM </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>[项目记录]基于AR技术的党史长廊智慧导游APP</title>
       <link href="/2025/03/23/%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95-%E5%85%9A%E5%8F%B2%E9%95%BF%E5%BB%8A%E6%99%BA%E6%85%A7%E5%AF%BC%E6%B8%B8/"/>
       <url>/2025/03/23/%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95-%E5%85%9A%E5%8F%B2%E9%95%BF%E5%BB%8A%E6%99%BA%E6%85%A7%E5%AF%BC%E6%B8%B8/</url>
