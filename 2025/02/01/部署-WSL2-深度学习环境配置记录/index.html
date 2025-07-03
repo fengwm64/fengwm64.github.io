@@ -6,22 +6,30 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-    <meta name="description" content="0. 调整 WSL2 网络设置 搜索 WSL Settings  网络 选项卡  网络模式设置为 Mirrored  终端输入 wsl --shutdown; wsl 重启 WSL   1. 安装 miniconda 官方安装指南：https:&#x2F;&#x2F;docs.anaconda.com&#x2F;miniconda&#x2F;install&#x2F;#quick-command-line-install  具体命令如下：  mk">
+    <meta name="description" content="0. 调整 WSL2 网络设置 搜索 WSL Settings  网络 选项卡  网络模式设置为 Mirrored  终端输入 wsl --shutdown; wsl 重启 WSL   1. 设置 WSL2 开机自动启动1.1 打开 任务计划程序搜索 任务计划程序 打开  1.2 创建任务点击 任务计划程序 窗口右侧菜单的 创建任务  1.3 填写任务信息常规 选项卡  名称：启动WSL2 勾选：">
 <meta property="og:type" content="article">
 <meta property="og:title" content="[部署]WSL2 深度学习环境配置记录">
 <meta property="og:url" content="https://blog.fnas64.xin/2025/02/01/%E9%83%A8%E7%BD%B2-WSL2-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%B0%E5%BD%95/index.html">
 <meta property="og:site_name" content="迎风起降的小站">
-<meta property="og:description" content="0. 调整 WSL2 网络设置 搜索 WSL Settings  网络 选项卡  网络模式设置为 Mirrored  终端输入 wsl --shutdown; wsl 重启 WSL   1. 安装 miniconda 官方安装指南：https:&#x2F;&#x2F;docs.anaconda.com&#x2F;miniconda&#x2F;install&#x2F;#quick-command-line-install  具体命令如下：  mk">
+<meta property="og:description" content="0. 调整 WSL2 网络设置 搜索 WSL Settings  网络 选项卡  网络模式设置为 Mirrored  终端输入 wsl --shutdown; wsl 重启 WSL   1. 设置 WSL2 开机自动启动1.1 打开 任务计划程序搜索 任务计划程序 打开  1.2 创建任务点击 任务计划程序 窗口右侧菜单的 创建任务  1.3 填写任务信息常规 选项卡  名称：启动WSL2 勾选：">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/20250201231525.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/20250201231635.png">
+<meta property="og:image" content="https://img.102465.xyz/file/SJ6Jt923.png">
+<meta property="og:image" content="https://blog.fnas64.xin/!%5B20250201231635.png%5D(https:/img.102465.xyz/file/46hfkTJJ.png)">
+<meta property="og:image" content="https://img.102465.xyz/file/dHHyFEJP.png">
+<meta property="og:image" content="https://img.102465.xyz/file/RxiSgTpz.png">
+<meta property="og:image" content="https://img.102465.xyz/file/gUgCc855.png">
+<meta property="og:image" content="https://img.102465.xyz/file/okjdogqk.png">
+<meta property="og:image" content="https://img.102465.xyz/file/3auPZczT.png">
+<meta property="og:image" content="https://img.102465.xyz/file/E4TWc0Lv.png">
+<meta property="og:image" content="https://img.102465.xyz/file/7eK7jG1v.png">
+<meta property="og:image" content="https://img.102465.xyz/file/9ImIPozS.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/20250201232800.png">
 <meta property="article:published_time" content="2025-02-01T14:49:40.000Z">
-<meta property="article:modified_time" content="2025-02-01T16:27:07.000Z">
+<meta property="article:modified_time" content="2025-07-03T07:51:17.691Z">
 <meta property="article:author" content="fengwm">
 <meta property="article:tag" content="WSL2">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/20250201231525.png">
+<meta name="twitter:image" content="https://img.102465.xyz/file/SJ6Jt923.png">
     
     
       
@@ -129,7 +137,7 @@
     
     
       <div id="toc">
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0-%E8%B0%83%E6%95%B4-WSL2-%E7%BD%91%E7%BB%9C%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">0. 调整 WSL2 网络设置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%AE%89%E8%A3%85-miniconda"><span class="toc-number">2.</span> <span class="toc-text">1. 安装 miniconda</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%AE%89%E8%A3%85-CUDA"><span class="toc-number">3.</span> <span class="toc-text">2. 安装 CUDA</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E6%A3%80%E6%9F%A5%E9%A9%B1%E5%8A%A8"><span class="toc-number">3.1.</span> <span class="toc-text">2.1 检查驱动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-CUDA-Toolkit"><span class="toc-number">3.2.</span> <span class="toc-text">2.2 CUDA Toolkit</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0-%E8%B0%83%E6%95%B4-WSL2-%E7%BD%91%E7%BB%9C%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">0. 调整 WSL2 网络设置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E8%AE%BE%E7%BD%AE-WSL2-%E5%BC%80%E6%9C%BA%E8%87%AA%E5%8A%A8%E5%90%AF%E5%8A%A8"><span class="toc-number">2.</span> <span class="toc-text">1. 设置 WSL2 开机自动启动</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E6%89%93%E5%BC%80-%E4%BB%BB%E5%8A%A1%E8%AE%A1%E5%88%92%E7%A8%8B%E5%BA%8F"><span class="toc-number">2.1.</span> <span class="toc-text">1.1 打开 任务计划程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E5%88%9B%E5%BB%BA%E4%BB%BB%E5%8A%A1"><span class="toc-number">2.2.</span> <span class="toc-text">1.2 创建任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E5%A1%AB%E5%86%99%E4%BB%BB%E5%8A%A1%E4%BF%A1%E6%81%AF"><span class="toc-number">2.3.</span> <span class="toc-text">1.3 填写任务信息</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-WSL-%E6%8C%82%E8%BD%BD%E5%B1%80%E5%9F%9F%E7%BD%91-SMB-%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="toc-number">3.</span> <span class="toc-text">2. WSL 挂载局域网 SMB 共享文件夹</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E5%AE%89%E8%A3%85%E5%B7%A5%E5%85%B7"><span class="toc-number">3.1.</span> <span class="toc-text">2.1 安装工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E6%B5%8B%E8%AF%95%E5%91%BD%E4%BB%A4"><span class="toc-number">3.2.</span> <span class="toc-text">2.2 测试命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E8%AE%BE%E7%BD%AE%E8%87%AA%E5%8A%A8%E6%8C%82%E8%BD%BD"><span class="toc-number">3.3.</span> <span class="toc-text">2.3 设置自动挂载</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%85%B3%E9%97%AD%E8%8B%B1%E4%BC%9F%E8%BE%BE-GPU-%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98"><span class="toc-number">4.</span> <span class="toc-text">3. 关闭英伟达 GPU 共享内存</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Windows"><span class="toc-number">4.1.</span> <span class="toc-text">Windows</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#WSL2"><span class="toc-number">4.2.</span> <span class="toc-text">WSL2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">4.3.</span> <span class="toc-text">参考</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%AE%89%E8%A3%85-miniconda"><span class="toc-number">5.</span> <span class="toc-text">4. 安装 miniconda</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%AE%89%E8%A3%85-CUDA"><span class="toc-number">6.</span> <span class="toc-text">5. 安装 CUDA</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E6%A3%80%E6%9F%A5%E9%A9%B1%E5%8A%A8"><span class="toc-number">6.1.</span> <span class="toc-text">5.1 检查驱动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-CUDA-Toolkit"><span class="toc-number">6.2.</span> <span class="toc-text">5.2 CUDA Toolkit</span></a></li></ol></li></ol>
       </div>
     
   </span>
@@ -180,16 +188,83 @@
 
   <div class="content e-content" itemprop="articleBody">
     <h2 id="0-调整-WSL2-网络设置"><a href="#0-调整-WSL2-网络设置" class="headerlink" title="0. 调整 WSL2 网络设置"></a>0. 调整 WSL2 网络设置</h2><ul>
-<li><p>搜索 <code>WSL Settings</code><br><img src="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/20250201231525.png" alt="20250201231525"></p>
+<li><p>搜索 <code>WSL Settings</code><br><img src="https://img.102465.xyz/file/SJ6Jt923.png" alt="20250201231525.png"></p>
 </li>
 <li><p><code>网络</code> 选项卡</p>
 </li>
-<li><p>网络模式设置为 <code>Mirrored</code><br><img src="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/20250201231635.png" alt="20250201231635"></p>
+<li><p>网络模式设置为 <code>Mirrored</code><br><img src="/!%5B20250201231635.png%5D(https:/img.102465.xyz/file/46hfkTJJ.png)" alt="20250201231635"></p>
 </li>
 <li><p>终端输入 <code>wsl --shutdown; wsl</code> 重启 WSL</p>
 </li>
 </ul>
-<h2 id="1-安装-miniconda"><a href="#1-安装-miniconda" class="headerlink" title="1. 安装 miniconda"></a>1. 安装 miniconda</h2><ul>
+<h2 id="1-设置-WSL2-开机自动启动"><a href="#1-设置-WSL2-开机自动启动" class="headerlink" title="1. 设置 WSL2 开机自动启动"></a>1. 设置 WSL2 开机自动启动</h2><h3 id="1-1-打开-任务计划程序"><a href="#1-1-打开-任务计划程序" class="headerlink" title="1.1 打开 任务计划程序"></a>1.1 打开 <code>任务计划程序</code></h3><p>搜索 <code>任务计划程序</code> 打开</p>
+<p><img src="https://img.102465.xyz/file/dHHyFEJP.png" alt="任务计划程序"></p>
+<h3 id="1-2-创建任务"><a href="#1-2-创建任务" class="headerlink" title="1.2 创建任务"></a>1.2 <code>创建任务</code></h3><p>点击 <code>任务计划程序</code> 窗口右侧菜单的 <code>创建任务</code></p>
+<p><img src="https://img.102465.xyz/file/RxiSgTpz.png" alt="创建任务"></p>
+<h3 id="1-3-填写任务信息"><a href="#1-3-填写任务信息" class="headerlink" title="1.3 填写任务信息"></a>1.3 填写任务信息</h3><p><strong>常规</strong> 选项卡</p>
+<ul>
+<li>名称：启动WSL2</li>
+<li>勾选：不管用户是否登陆都要运行</li>
+</ul>
+<p><img src="https://img.102465.xyz/file/gUgCc855.png" alt="常规"></p>
+<p><strong>触发器</strong> 选项卡</p>
+<ul>
+<li>点击左下角的 <code>新建</code> 按钮新建一个触发器</li>
+<li>开始任务：设置为 <code>启动时</code></li>
+<li>点击 <code>确定</code> 完成</li>
+</ul>
+<p><img src="https://img.102465.xyz/file/okjdogqk.png" alt="触发器"></p>
+<p><strong>操作</strong> 选项卡</p>
+<ul>
+<li>点击左下角的 <code>新建</code> 按钮新建一个操作</li>
+<li>操作：设置为 <code>启动程序</code></li>
+<li>程序或脚本：设置为 <code>&quot;C:\Program Files\WSL\wsl.exe&quot;</code> （必须有双引号）</li>
+<li>点击 <code>确定</code> 完成</li>
+</ul>
+<p><img src="https://img.102465.xyz/file/3auPZczT.png" alt="操作"></p>
+<p><strong>条件</strong> 选项卡</p>
+<p><strong>全部取消勾选</strong></p>
+<p><img src="https://img.102465.xyz/file/E4TWc0Lv.png" alt="条件"></p>
+<p><strong>设置</strong> 选项卡</p>
+<p><strong>勾选 <code>允许按需执行任务</code>，其余取消勾选</strong></p>
+<p><img src="https://img.102465.xyz/file/7eK7jG1v.png" alt="设置"></p>
+<p>最后点击右下角的 <code>确定</code> 按钮完成，可以重启电脑试试看WSL有没有自动打开</p>
+<h2 id="2-WSL-挂载局域网-SMB-共享文件夹"><a href="#2-WSL-挂载局域网-SMB-共享文件夹" class="headerlink" title="2. WSL 挂载局域网 SMB 共享文件夹"></a>2. WSL 挂载局域网 SMB 共享文件夹</h2><h3 id="2-1-安装工具"><a href="#2-1-安装工具" class="headerlink" title="2.1 安装工具"></a>2.1 安装工具</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt update</span><br><span class="line"><span class="built_in">sudo</span> apt install cifs-utils</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-测试命令"><a href="#2-2-测试命令" class="headerlink" title="2.2 测试命令"></a>2.2 测试命令</h3><p><strong>注意 <code>&lt;&gt;</code> 包裹的要替换成自己的</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir -p /mnt/&lt;dirname&gt;</span><br><span class="line">sudo mount -t cifs //&lt;ip&gt;/&lt;path&gt; /mnt/&lt;dirname&gt; -o username=&lt;yourname&gt;,password=&lt;yourpass&gt;,vers=3.0</span><br><span class="line">ls /mnt/&lt;dirname&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>&lt;dirname&gt;</code>：挂载点的文件夹名（随意）</li>
+<li><code>&lt;ip&gt;</code>：SMB 共享文件夹在局域网中的 IP</li>
+<li><code>&lt;path&gt;</code>：SMB 共享文件夹路径</li>
+<li><code>&lt;yourname&gt;</code>：SMB 共享文件夹认证用户名</li>
+<li><code>&lt;yourpass&gt;</code>：SMB 共享文件夹认证用密码</li>
+<li><code>vers=3.0</code>：SMB 协议版本（可改为 2.1、2.0 视目标服务器支持情况）<br>如果成功执行命令，应该可以看到你 SMB 共享文件夹中的文件</li>
+</ul>
+<h3 id="2-3-设置自动挂载"><a href="#2-3-设置自动挂载" class="headerlink" title="2.3 设置自动挂载"></a>2.3 设置自动挂载</h3><p>我的终端是 Bash ，Bash 的配置文件路径为 <code>~/.bashrc</code>；如果是 Zsh 请改正成 <code>～/.zshrc</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nano ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>在最后一行加入（注意 <code>&lt;&gt;</code> 要替换）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ! mountpoint -q /mnt/&lt;<span class="built_in">dirname</span>&gt;; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">sudo</span> mount -t cifs //&lt;ip&gt;/&lt;path&gt; /mnt/&lt;<span class="built_in">dirname</span>&gt; -o username=&lt;yourname&gt;,password=&lt;yourpass&gt;,vers=3.0</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-关闭英伟达-GPU-共享内存"><a href="#3-关闭英伟达-GPU-共享内存" class="headerlink" title="3. 关闭英伟达 GPU 共享内存"></a>3. 关闭英伟达 GPU 共享内存</h2><blockquote>
+<p>英伟达在驱动程序536.40中引入了一项新功能，允许应用程序在GPU显存不足时使用系统内存来替代GPU显存。这改善了在GPU内存不足时的应用运行稳定性，并使得GPU在运行时可用的名义显存量大于其标注显存量，但会导致运行速度降低，并且所降低的速度与所共享的内存成正比。</p>
+</blockquote>
+<h3 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h3><ul>
+<li>NVIDIA控制面板</li>
+<li>在全局&#x2F;指定程序设置的CUDA - Sysmem Fallback Policy （系统内存回退政策），改为偏好无回退（这个选项需要中译中，英文应该是no fallback）。</li>
+</ul>
+<p><img src="https://img.102465.xyz/file/9ImIPozS.png" alt="ec053578-d4da-4b8d-acba-ff5bc6d79e07.png"></p>
+<h3 id="WSL2"><a href="#WSL2" class="headerlink" title="WSL2"></a>WSL2</h3><p>微软WSL仓库的 <a target="_blank" rel="noopener" href="https://github.com/microsoft/WSL/issues/11050">issue</a> 中提到，torch中可以通过设置解决：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.cuda.set_per_process_memory_fraction(1.0, 0)</span><br></pre></td></tr></table></figure>
+
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://ribombalt.github.io/blog/2025/04/20/disable-nvidia-shared-gpu">https://ribombalt.github.io/blog/2025/04/20/disable-nvidia-shared-gpu</a></li>
+<li><a target="_blank" rel="noopener" href="https://nvidia.custhelp.com/app/answers/detail/a_id/5490/~/system-memory-fallback-for-stable-diffusion">https://nvidia.custhelp.com/app/answers/detail/a_id/5490/~/system-memory-fallback-for-stable-diffusion</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/microsoft/WSL/issues/11050">https://github.com/microsoft/WSL/issues/11050</a></li>
+</ul>
+<h2 id="4-安装-miniconda"><a href="#4-安装-miniconda" class="headerlink" title="4. 安装 miniconda"></a>4. 安装 miniconda</h2><ul>
 <li>官方安装指南：<a target="_blank" rel="noopener" href="https://docs.anaconda.com/miniconda/install/#quick-command-line-install">https://docs.anaconda.com/miniconda/install/#quick-command-line-install</a></li>
 </ul>
 <p>具体命令如下：</p>
@@ -201,13 +276,13 @@
 <li><code>source ~/miniconda3/bin/activate</code></li>
 <li><code>conda init --all</code></li>
 </ul>
-<h2 id="2-安装-CUDA"><a href="#2-安装-CUDA" class="headerlink" title="2. 安装 CUDA"></a>2. 安装 CUDA</h2><h3 id="2-1-检查驱动"><a href="#2-1-检查驱动" class="headerlink" title="2.1 检查驱动"></a>2.1 检查驱动</h3><ul>
+<h2 id="5-安装-CUDA"><a href="#5-安装-CUDA" class="headerlink" title="5. 安装 CUDA"></a>5. 安装 CUDA</h2><h3 id="5-1-检查驱动"><a href="#5-1-检查驱动" class="headerlink" title="5.1 检查驱动"></a>5.1 检查驱动</h3><ul>
 <li>WSL中输入：<code>nvidia-smi</code><blockquote>
 <p>正常来说，在Windows系统上安装了Nvidia显卡驱动，WSL里无需手动安装驱动。正常输出如下：<br><img src="https://raw.githubusercontent.com/fengwm64/imgs/main/imgs/20250201232800.png" alt="20250201232800"></p>
 </blockquote>
 </li>
 </ul>
-<h3 id="2-2-CUDA-Toolkit"><a href="#2-2-CUDA-Toolkit" class="headerlink" title="2.2 CUDA Toolkit"></a>2.2 CUDA Toolkit</h3><ul>
+<h3 id="5-2-CUDA-Toolkit"><a href="#5-2-CUDA-Toolkit" class="headerlink" title="5.2 CUDA Toolkit"></a>5.2 CUDA Toolkit</h3><ul>
 <li>官方指南：<a target="_blank" rel="noopener" href="https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=WSL-Ubuntu&target_version=2.0&target_type=runfile_local">https://developer.nvidia.com/cuda-downloads?target_os=Linux&amp;target_arch=x86_64&amp;Distribution=WSL-Ubuntu&amp;target_version=2.0&amp;target_type=runfile_local</a></li>
 </ul>
 
@@ -243,7 +318,7 @@
     
     
       <div id="toc-footer" style="display: none">
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0-%E8%B0%83%E6%95%B4-WSL2-%E7%BD%91%E7%BB%9C%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">0. 调整 WSL2 网络设置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%AE%89%E8%A3%85-miniconda"><span class="toc-number">2.</span> <span class="toc-text">1. 安装 miniconda</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%AE%89%E8%A3%85-CUDA"><span class="toc-number">3.</span> <span class="toc-text">2. 安装 CUDA</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E6%A3%80%E6%9F%A5%E9%A9%B1%E5%8A%A8"><span class="toc-number">3.1.</span> <span class="toc-text">2.1 检查驱动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-CUDA-Toolkit"><span class="toc-number">3.2.</span> <span class="toc-text">2.2 CUDA Toolkit</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0-%E8%B0%83%E6%95%B4-WSL2-%E7%BD%91%E7%BB%9C%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">0. 调整 WSL2 网络设置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E8%AE%BE%E7%BD%AE-WSL2-%E5%BC%80%E6%9C%BA%E8%87%AA%E5%8A%A8%E5%90%AF%E5%8A%A8"><span class="toc-number">2.</span> <span class="toc-text">1. 设置 WSL2 开机自动启动</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E6%89%93%E5%BC%80-%E4%BB%BB%E5%8A%A1%E8%AE%A1%E5%88%92%E7%A8%8B%E5%BA%8F"><span class="toc-number">2.1.</span> <span class="toc-text">1.1 打开 任务计划程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E5%88%9B%E5%BB%BA%E4%BB%BB%E5%8A%A1"><span class="toc-number">2.2.</span> <span class="toc-text">1.2 创建任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E5%A1%AB%E5%86%99%E4%BB%BB%E5%8A%A1%E4%BF%A1%E6%81%AF"><span class="toc-number">2.3.</span> <span class="toc-text">1.3 填写任务信息</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-WSL-%E6%8C%82%E8%BD%BD%E5%B1%80%E5%9F%9F%E7%BD%91-SMB-%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="toc-number">3.</span> <span class="toc-text">2. WSL 挂载局域网 SMB 共享文件夹</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E5%AE%89%E8%A3%85%E5%B7%A5%E5%85%B7"><span class="toc-number">3.1.</span> <span class="toc-text">2.1 安装工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E6%B5%8B%E8%AF%95%E5%91%BD%E4%BB%A4"><span class="toc-number">3.2.</span> <span class="toc-text">2.2 测试命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E8%AE%BE%E7%BD%AE%E8%87%AA%E5%8A%A8%E6%8C%82%E8%BD%BD"><span class="toc-number">3.3.</span> <span class="toc-text">2.3 设置自动挂载</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%85%B3%E9%97%AD%E8%8B%B1%E4%BC%9F%E8%BE%BE-GPU-%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98"><span class="toc-number">4.</span> <span class="toc-text">3. 关闭英伟达 GPU 共享内存</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Windows"><span class="toc-number">4.1.</span> <span class="toc-text">Windows</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#WSL2"><span class="toc-number">4.2.</span> <span class="toc-text">WSL2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">4.3.</span> <span class="toc-text">参考</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%AE%89%E8%A3%85-miniconda"><span class="toc-number">5.</span> <span class="toc-text">4. 安装 miniconda</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%AE%89%E8%A3%85-CUDA"><span class="toc-number">6.</span> <span class="toc-text">5. 安装 CUDA</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E6%A3%80%E6%9F%A5%E9%A9%B1%E5%8A%A8"><span class="toc-number">6.1.</span> <span class="toc-text">5.1 检查驱动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-CUDA-Toolkit"><span class="toc-number">6.2.</span> <span class="toc-text">5.2 CUDA Toolkit</span></a></li></ol></li></ol>
       </div>
     
 
